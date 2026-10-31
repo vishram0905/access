@@ -1,0 +1,23 @@
+{
+ "datalog_since": null,
+ "requests": 0,
+ "handshakes": 0,
+ "no_handshake": 0,
+ "by_outcome": {},
+ "by_region": {},
+ "by_provider_type": {},
+ "top_refusing_domains": [],
+ "sites": {},
+ "site_failure_reasons": {},
+ "funnel": {
+  "pages_stored": 0,
+  "dropped_free_filter": 0,
+  "index_pages_turned_into_sites": 0,
+  "waiting_for_annotator": 0,
+  "waiting_for_judges": 0,
+  "judge_decisions": {},
+  "judge_rejection_reasons": {},
+  "published_in_search": 629,
+  "known_programme_stubs": 0
+ }
+}

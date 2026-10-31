@@ -1,0 +1,96 @@
+{
+ "built": "2026-10-29T08:04:16",
+ "schema_version": "2.0",
+ "programmes": 629,
+ "withheld_low_trust": 0,
+ "bands": {
+  "high": 0.95,
+  "medium": 0.3,
+  "provisional": false,
+  "audited": 422,
+  "accuracy_high": 0.83,
+  "accuracy_medium_and_up": 0.81,
+  "by_trust_bin": {
+   "0.5+": {
+    "rows": 3,
+    "agreement": 0.83
+   },
+   "0.6+": {
+    "rows": 13,
+    "agreement": 0.86
+   },
+   "0.7+": {
+    "rows": 43,
+    "agreement": 0.78
+   },
+   "0.8+": {
+    "rows": 109,
+    "agreement": 0.79
+   },
+   "0.9+": {
+    "rows": 208,
+    "agreement": 0.83
+   }
+  },
+  "catch_rate": {
+   "fake_rule": {
+    "caught": 1.0,
+    "tests": 22
+   },
+   "flipped_nationality": {
+    "caught": 1.0,
+    "tests": 12
+   },
+   "inflated_funding": {
+    "caught": 0.75,
+    "tests": 4
+   },
+   "shifted_deadline": {
+    "caught": 1.0,
+    "tests": 10
+   },
+   "wrong_page": {
+    "caught": 1.0,
+    "tests": 10
+   }
+  },
+  "calibrated_at": "2026-10-29T00:02:06+00:00"
+ },
+ "verified": 629,
+ "awaiting_claim_check": 0,
+ "withheld_incomplete": 500,
+ "by_band": {
+  "high": 400,
+  "medium": 229
+ },
+ "by_region": {
+  "Europe": 204,
+  "Asia": 142,
+  "Global": 123,
+  "North America": 111,
+  "Asia-Pacific": 35,
+  "Middle East": 9,
+  "South America": 4,
+  "Africa": 1
+ },
+ "by_provider_type": {
+  "government": 230,
+  "university": 177,
+  "foundation_charity": 177,
+  "research_institute": 20,
+  "intergovernmental": 18,
+  "industry": 7
+ },
+ "by_opportunity_type": {
+  "research_grant": 126,
+  "undergraduate_scholarship": 117,
+  "phd_scholarship": 108,
+  "research_fellowship": 70,
+  "masters_scholarship": 66,
+  "postdoc_fellowship": 60,
+  "travel_mobility_grant": 46,
+  "award_prize": 22,
+  "research_internship": 10,
+  "industry_fellowship": 4
+ }
+}

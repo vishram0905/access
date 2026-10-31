@@ -1,0 +1,41 @@
+{
+ "panel": [
+  "Nemotron 3 Super",
+  "Phi-4-mini",
+  "Muse Glimmer 30B"
+ ],
+ "types": {
+  "shifted_deadline": {
+   "tests": 8,
+   "caught_anchored": 1.0,
+   "caught_retrieved": 0.88,
+   "only_retrieved_caught": 0,
+   "only_anchored_caught": 1
+  },
+  "inflated_funding": {
+   "tests": 8,
+   "caught_anchored": 0.75,
+   "caught_retrieved": 0.88,
+   "only_retrieved_caught": 1,
+   "only_anchored_caught": 0
+  },
+  "fake_rule": {
+   "tests": 8,
+   "caught_anchored": 1.0,
+   "caught_retrieved": 1.0,
+   "only_retrieved_caught": 0,
+   "only_anchored_caught": 0
+  },
+  "flipped_nationality": {
+   "tests": 8,
+   "caught_anchored": 0.88,
+   "caught_retrieved": 1.0,
+   "only_retrieved_caught": 1,
+   "only_anchored_caught": 0
+  }
+ },
+ "excerpt_chars": {
+  "anchored": 2292,
+  "retrieved": 3293
+ }
+}

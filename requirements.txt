@@ -1,0 +1,13 @@
+# ACCESS - all models used are free tiers or run locally (see docs/ARCHITECTURE.md)
+streamlit>=1.45,<1.46
+google-genai>=2.0      # Gemini (annotator, plan writer)
+groq>=1.0              # GPT-OSS / Qwen (judges, fit ranker)
+ollama>=0.6            # local: nomic-embed-text (embeddings), phi4-mini (judge)
+python-dotenv>=1.0
+requests>=2.31
+beautifulsoup4>=4.12
+numpy>=1.26
+pandas>=2.0
+altair>=5.0
+psutil>=5.9
+playwright>=1.40       # headless rendering of JavaScript pages (run: playwright install chromium)

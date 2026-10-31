@@ -1,0 +1,225 @@
+{
+ "answers": 24,
+ "faithful_rate": "1.000 [1.000-1.000]",
+ "faithful_rate_when_answering": "1.000 [1.000-1.000]",
+ "page_does_not_say_rate": 0.42,
+ "median_seconds": 0.0,
+ "rows": [
+  {
+   "programme": "Graduate Mobility Award",
+   "question": "What documents do I need to submit?",
+   "answer": "You must submit the signed GMA application form with supporting documents, obtain signatures from your supervisor, GPD, and Faculty Associate Dean (where applicable), complete the Travel Registry, and finish the pre\u2011departure orientation session. If you are an FRQ scholarship holder who is not a Canadian citizen or permanent resident, you must also submit the Out\u2011of\u2011Quebec Short Stay declaration form.",
+   "verified": true,
+   "not_stated": false,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "Graduate Mobility Award",
+   "question": "Can I apply if I am still finishing my current degree?",
+   "answer": "Yes, you can apply while still finishing your degree if you are enrolled in a graduate program, have completed one full-time term, and will be registered full-time at the time of travel.",
+   "verified": true,
+   "not_stated": false,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "Reservation Program for Monbukagakusho Honors Scholarship for Privately-Financed International Students (EJU 2nd Session in November 2025)",
+   "question": "What documents do I need to submit?",
+   "answer": "Applicants must submit a copy of their Reservation Notice to the school they will attend and notify JASSO of their enrollment school.",
+   "verified": true,
+   "not_stated": false,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "Reservation Program for Monbukagakusho Honors Scholarship for Privately-Financed International Students (EJU 2nd Session in November 2025)",
+   "question": "Can I apply if I am still finishing my current degree?",
+   "answer": "The official page does not say.",
+   "verified": true,
+   "not_stated": true,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "Synergy Grant",
+   "question": "Is there an age limit?",
+   "answer": "The official page does not say.",
+   "verified": true,
+   "not_stated": true,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "Synergy Grant",
+   "question": "How long does the funding last?",
+   "answer": "The official page does not say.",
+   "verified": true,
+   "not_stated": true,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "2027/28 Chevening Scholarships",
+   "question": "What documents do I need to submit?",
+   "answer": "You must submit the Chevening scholarship application online. In that application you should include your chosen University of Exeter Master's degree programme in your course choices and also submit your Exeter programme application when it opens.",
+   "verified": true,
+   "not_stated": false,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "2027/28 Chevening Scholarships",
+   "question": "How long does the funding last?",
+   "answer": "The funding lasts for one year.",
+   "verified": true,
+   "not_stated": false,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "Study Scholarships - Master Studies for All Academic Disciplines",
+   "question": "Can I apply from outside the country?",
+   "answer": "You can apply only if your country appears in the eligibility list; otherwise you cannot apply.",
+   "verified": true,
+   "not_stated": false,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "Study Scholarships - Master Studies for All Academic Disciplines",
+   "question": "Can I apply if I am still finishing my current degree?",
+   "answer": "No, you may only apply if you have completed your first degree by the time the funding period begins; you cannot apply while still finishing your degree unless it will be completed before then.",
+   "verified": true,
+   "not_stated": false,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "Adel S. Sedra Distinguished Graduate Award",
+   "question": "Can I apply from outside the country?",
+   "answer": "The official page does not say.",
+   "verified": true,
+   "not_stated": true,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "Adel S. Sedra Distinguished Graduate Award",
+   "question": "What documents do I need to submit?",
+   "answer": "Submit a completed online application form and a curriculum vitae with your full name clear on the first page [P11]. Provide official e\u2011transcripts with encryption removed and include grading legends for each transcript [P16]. Have each referee send a PDF letter of recommendation via email after you submit the application [P10].",
+   "verified": true,
+   "not_stated": false,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "Advanced Grant",
+   "question": "Can I apply if I am still finishing my current degree?",
+   "answer": "The official page does not say.",
+   "verified": true,
+   "not_stated": true,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "Advanced Grant",
+   "question": "What documents do I need to submit?",
+   "answer": "An ERC grant application must include administrative forms, the research proposal, and supplementary documents.",
+   "verified": true,
+   "not_stated": false,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "Banting Postdoctoral Fellowships Program",
+   "question": "How long does the funding last?",
+   "answer": "The Banting Postdoctoral Fellowship provides funding for two years.",
+   "verified": true,
+   "not_stated": false,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "Banting Postdoctoral Fellowships Program",
+   "question": "Is there an age limit?",
+   "answer": "The official page does not say.",
+   "verified": true,
+   "not_stated": true,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "Fulbright-National Geographic Award Program",
+   "question": "What documents do I need to submit?",
+   "answer": "Semi-finalists who indicated interest will be invited to submit additional materials, and those materials must be submitted through an invite\u2011only application portal hosted by the National Geographic Society.",
+   "verified": true,
+   "not_stated": false,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "Fulbright-National Geographic Award Program",
+   "question": "How long does the funding last?",
+   "answer": "The official page does not say.",
+   "verified": true,
+   "not_stated": true,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "Postdoctoral Fellowships for Research in Japan (Short-term (PE))",
+   "question": "What documents do I need to submit?",
+   "answer": "If selected, you must submit an original copy of your doctoral degree certificate or diploma, or a prospect certificate if the degree is not yet obtained, before the fellowship starts.",
+   "verified": true,
+   "not_stated": false,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "Postdoctoral Fellowships for Research in Japan (Short-term (PE))",
+   "question": "Can I apply if I am still finishing my current degree?",
+   "answer": "Yes, you may apply while still completing your degree if you are currently enrolled in a doctoral program, as the eligibility criteria include applicants who are currently enrolled. However, if selected you must provide a prospect certificate for your doctoral degree before the fellowship start date.",
+   "verified": true,
+   "not_stated": false,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "NTU-University Scholars Programme",
+   "question": "What documents do I need to submit?",
+   "answer": "The official page does not say.",
+   "verified": true,
+   "not_stated": true,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "NTU-University Scholars Programme",
+   "question": "How long does the funding last?",
+   "answer": "The official page does not say.",
+   "verified": true,
+   "not_stated": true,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "The Scholarship",
+   "question": "What documents do I need to submit?",
+   "answer": "The official page does not say.",
+   "verified": true,
+   "not_stated": true,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  },
+  {
+   "programme": "The Scholarship",
+   "question": "Can I apply from outside the country?",
+   "answer": "Yes, the scholarship is open to applicants from outside the UK.",
+   "verified": true,
+   "not_stated": false,
+   "seconds": 0.0,
+   "model": "Nemotron 3 Super"
+  }
+ ]
+}

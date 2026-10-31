@@ -1,0 +1,17 @@
+# secrets
+.env
+# Python
+__pycache__/
+*.pyc
+# working data (large, rebuilt by the agents) - the repo ships data/lookup (search library) and data/eval instead
+data/*
+!data/lookup/
+!data/eval/
+data/eval/*.log
+# superseded by the agents pipeline / old showcase packaging (kept locally, not shipped)
+deploy/
+build_dataset.py
+# helper files
+_t_*.py
+.DS_Store
+data/eval/test_suite.json

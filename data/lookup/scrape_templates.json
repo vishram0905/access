@@ -1,0 +1,74 @@
+{
+ "www.nrf.gov.sg": {
+  "provider_type": "government",
+  "region": "Asia",
+  "pages": 2,
+  "sections": {
+   "how_to_apply": [
+    "selection process and guidelines"
+   ]
+  },
+  "coverage": {
+   "rules": 0.5,
+   "deadline": 0.0,
+   "funding_amount": 0.0,
+   "documents": 0.0
+  }
+ },
+ "www.studyinjapan.go.jp": {
+  "provider_type": "government",
+  "region": "Asia",
+  "pages": 1,
+  "sections": {
+   "eligibility": [
+    "eligibility"
+   ],
+   "funding": [
+    "scholarship"
+   ],
+   "how_to_apply": [
+    "application process"
+   ]
+  },
+  "coverage": {
+   "rules": 0.0,
+   "deadline": 0.0,
+   "funding_amount": 0.0,
+   "documents": 1.0
+  }
+ },
+ "www.jsps.go.jp": {
+  "provider_type": "government",
+  "region": "Asia",
+  "pages": 1,
+  "sections": {},
+  "coverage": {
+   "rules": 0.0,
+   "deadline": 0.0,
+   "funding_amount": 0.0,
+   "documents": 0.0
+  }
+ },
+ "www.ntu.edu.sg": {
+  "provider_type": "university",
+  "region": "Asia",
+  "pages": 1,
+  "sections": {
+   "eligibility": [
+    "academic qualifications"
+   ],
+   "deadline": [
+    "application period"
+   ],
+   "how_to_apply": [
+    "application must be submitted online through the application portal"
+   ]
+  },
+  "coverage": {
+   "rules": 1.0,
+   "deadline": 0.0,
+   "funding_amount": 0.0,
+   "documents": 1.0
+  }
+ }
+}

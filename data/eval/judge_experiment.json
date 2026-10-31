@@ -1,0 +1,264 @@
+{
+ "design": {
+  "planted": 24,
+  "clean_records": 12,
+  "judges": [
+   "GPT-OSS-120B",
+   "Qwen 27B",
+   "Nemotron 3 Super",
+   "GLM-5.3 Flash",
+   "Phi-4-mini",
+   "Muse Glimmer 30B"
+  ]
+ },
+ "judges": {
+  "GPT-OSS-120B": {
+   "planted_judged": 24,
+   "caught": 1.0,
+   "caught_ci95": [
+    0.86,
+    1.0
+   ],
+   "by_type": {
+    "shifted_deadline": "6/6",
+    "inflated_funding": "6/6",
+    "fake_rule": "6/6",
+    "flipped_nationality": "6/6"
+   },
+   "false_alarm": 0.28,
+   "false_alarm_ci95": [
+    0.17,
+    0.43
+   ],
+   "clean_claims": 46,
+   "balanced_accuracy": 0.86
+  },
+  "Qwen 27B": {
+   "planted_judged": 24,
+   "caught": 0.75,
+   "caught_ci95": [
+    0.55,
+    0.88
+   ],
+   "by_type": {
+    "shifted_deadline": "6/6",
+    "inflated_funding": "6/6",
+    "fake_rule": "6/6",
+    "flipped_nationality": "0/6"
+   },
+   "false_alarm": 0.2,
+   "false_alarm_ci95": [
+    0.11,
+    0.33
+   ],
+   "clean_claims": 46,
+   "balanced_accuracy": 0.78
+  },
+  "Nemotron 3 Super": {
+   "planted_judged": 24,
+   "caught": 0.96,
+   "caught_ci95": [
+    0.8,
+    0.99
+   ],
+   "by_type": {
+    "shifted_deadline": "5/6",
+    "inflated_funding": "6/6",
+    "fake_rule": "6/6",
+    "flipped_nationality": "6/6"
+   },
+   "false_alarm": 0.24,
+   "false_alarm_ci95": [
+    0.14,
+    0.38
+   ],
+   "clean_claims": 46,
+   "balanced_accuracy": 0.86
+  },
+  "GLM-5.3 Flash": {
+   "planted_judged": 0,
+   "caught": null,
+   "caught_ci95": [
+    null,
+    null
+   ],
+   "by_type": {
+    "shifted_deadline": "0/0",
+    "inflated_funding": "0/0",
+    "fake_rule": "0/0",
+    "flipped_nationality": "0/0"
+   },
+   "false_alarm": null,
+   "false_alarm_ci95": [
+    null,
+    null
+   ],
+   "clean_claims": 0,
+   "balanced_accuracy": null
+  },
+  "Phi-4-mini": {
+   "planted_judged": 24,
+   "caught": 0.38,
+   "caught_ci95": [
+    0.21,
+    0.57
+   ],
+   "by_type": {
+    "shifted_deadline": "3/6",
+    "inflated_funding": "1/6",
+    "fake_rule": "5/6",
+    "flipped_nationality": "0/6"
+   },
+   "false_alarm": 0.07,
+   "false_alarm_ci95": [
+    0.02,
+    0.18
+   ],
+   "clean_claims": 45,
+   "balanced_accuracy": 0.65
+  },
+  "Muse Glimmer 30B": {
+   "planted_judged": 24,
+   "caught": 1.0,
+   "caught_ci95": [
+    0.86,
+    1.0
+   ],
+   "by_type": {
+    "shifted_deadline": "6/6",
+    "inflated_funding": "6/6",
+    "fake_rule": "6/6",
+    "flipped_nationality": "6/6"
+   },
+   "false_alarm": 0.35,
+   "false_alarm_ci95": [
+    0.19,
+    0.55
+   ],
+   "clean_claims": 23,
+   "balanced_accuracy": 0.83
+  }
+ },
+ "panels": [
+  {
+   "panel": [
+    "Qwen 27B",
+    "Nemotron 3 Super",
+    "Muse Glimmer 30B"
+   ],
+   "default": false,
+   "caught": 1.0,
+   "false_alarm": 0.16,
+   "balanced_accuracy": 0.92,
+   "n": 24
+  },
+  {
+   "panel": [
+    "Nemotron 3 Super",
+    "Phi-4-mini",
+    "Muse Glimmer 30B"
+   ],
+   "default": false,
+   "caught": 1.0,
+   "false_alarm": 0.16,
+   "balanced_accuracy": 0.92,
+   "n": 24
+  },
+  {
+   "panel": [
+    "GPT-OSS-120B",
+    "Nemotron 3 Super",
+    "Phi-4-mini"
+   ],
+   "default": false,
+   "caught": 1.0,
+   "false_alarm": 0.19,
+   "balanced_accuracy": 0.91,
+   "n": 24
+  },
+  {
+   "panel": [
+    "GPT-OSS-120B",
+    "Qwen 27B",
+    "Nemotron 3 Super"
+   ],
+   "default": false,
+   "caught": 1.0,
+   "false_alarm": 0.23,
+   "balanced_accuracy": 0.89,
+   "n": 24
+  },
+  {
+   "panel": [
+    "GPT-OSS-120B",
+    "Qwen 27B",
+    "Muse Glimmer 30B"
+   ],
+   "default": false,
+   "caught": 1.0,
+   "false_alarm": 0.26,
+   "balanced_accuracy": 0.87,
+   "n": 24
+  },
+  {
+   "panel": [
+    "GPT-OSS-120B",
+    "Phi-4-mini",
+    "Muse Glimmer 30B"
+   ],
+   "default": false,
+   "caught": 1.0,
+   "false_alarm": 0.26,
+   "balanced_accuracy": 0.87,
+   "n": 24
+  },
+  {
+   "panel": [
+    "GPT-OSS-120B",
+    "Nemotron 3 Super",
+    "Muse Glimmer 30B"
+   ],
+   "default": false,
+   "caught": 1.0,
+   "false_alarm": 0.28,
+   "balanced_accuracy": 0.86,
+   "n": 24
+  },
+  {
+   "panel": [
+    "GPT-OSS-120B",
+    "Qwen 27B",
+    "Phi-4-mini"
+   ],
+   "default": true,
+   "caught": 0.75,
+   "false_alarm": 0.15,
+   "balanced_accuracy": 0.8,
+   "n": 24
+  },
+  {
+   "panel": [
+    "Qwen 27B",
+    "Nemotron 3 Super",
+    "Phi-4-mini"
+   ],
+   "default": false,
+   "caught": 0.75,
+   "false_alarm": 0.15,
+   "balanced_accuracy": 0.8,
+   "n": 24
+  },
+  {
+   "panel": [
+    "Qwen 27B",
+    "Phi-4-mini",
+    "Muse Glimmer 30B"
+   ],
+   "default": false,
+   "caught": 0.75,
+   "false_alarm": 0.17,
+   "balanced_accuracy": 0.79,
+   "n": 24
+  }
+ ]
+}
