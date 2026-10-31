@@ -127,7 +127,7 @@ def funding_text(l) -> str | None:
     return str(f)[:40] if f else None
 
 
-def card_html(l, facts: list[str], score=None, status=("Eligible", "")) -> str:
+def card_html(l, facts: list[str], score=None, status=("Eligible", ""), rank=None, pending=False) -> str:
     """The top of a result card: provider line, title, key facts, the reason it fits and one quote from the funder.
 
     We put the fit score in its own column on the right so the eye can scan scores down the page, and we show one
@@ -150,8 +150,14 @@ def card_html(l, facts: list[str], score=None, status=("Eligible", "")) -> str:
     if score is not None:
         right = (f"<div><small>Fit</small><b>{int(score)}</b><div class='meter'><i style='width:{int(score)}%'></i></div>"
                  f"</div><div class='status {kind}'><i>{tick}</i>{label}</div>")
+    elif rank is not None:
+        # Until the AI fit score arrives (or if it never does), we show where the programme sits in the
+        # similarity order rather than an empty placeholder.
+        note = "<div class='ranking'>Scoring fit…</div>" if pending else "<div class='ranking'>by relevance</div>"
+        right = (f"<div><small>Rank</small><b>#{rank}</b>{note}</div>"
+                 f"<div class='status {kind}'><i>{tick}</i>{label}</div>")
     else:
-        right = f"<div><small>Fit</small><b style='color:var(--line)'>–</b></div><div class='status {kind}'><i>{tick}</i>{label}</div>"
+        right = f"<div class='status {kind}'><i>{tick}</i>{label}</div>"
     return f"<div class='rc'><div>{left}</div><div class='score'>{right}</div></div>"
 
 
@@ -259,7 +265,7 @@ def concerns_html(l) -> str:
     return "".join(f"<div class='note'>Reviewer note: {esc(H(strip(c)))}</div>" for c in cs[:2])
 
 
-def match_card(l, res):
+def match_card(l, res, rank=None):
     checks = l.get("gate", {}).get("checks", [])
     met = sum(c["status"] == "pass" for c in checks)
     cond = sum(c["status"] == "conditional" for c in checks)
@@ -270,7 +276,8 @@ def match_card(l, res):
     score = l.get("score") if res.get("enriched") and l.get("fit") is not None else None
     status = ("Eligible, weaker fit", "amber") if l.get("weaker_fit") else ("Eligible", "")
     with st.container(border=True, key=f"card-{l['id']}"):
-        st.markdown(card_html(l, facts, score, status), unsafe_allow_html=True)
+        st.markdown(card_html(l, facts, score, status, rank, pending=bool(st.session_state.get("enrich_pending"))),
+                    unsafe_allow_html=True)
         with st.expander("Eligibility details"):
             eligibility_details(l)
         with st.expander("Application plan", expanded=bool(l.get("advice"))):
@@ -335,11 +342,11 @@ def show_results(res):
             st.info("No programme matches every rule yet. Check **Within reach** for options that need one "
                     "achievable step, such as a test score.")
         divider = False
-        for l in short:
+        for pos, l in enumerate(short, 1):
             if l.get("weaker_fit") and not divider and res.get("enriched"):
                 divider = True
                 st.markdown("**Also eligible, but a weaker fit for your goals**")
-            match_card(l, res)
+            match_card(l, res, pos)
     with t2:
         st.caption("You don't qualify yet, but each gap is achievable, for example a language test, "
                    "a publication, or finishing your degree.")

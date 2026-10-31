@@ -124,7 +124,7 @@ def _raw_call(spec: ModelSpec, system: str, prompt: str, model: str | None = Non
         import requests as _rq
         try:
             r = _client("nvidia").post(
-            "https://integrate.api.nvidia.com/v1/chat/completions", timeout=75,
+            "https://integrate.api.nvidia.com/v1/chat/completions", timeout=20 if current_role() == "live" else 75,
             headers={"Authorization": f"Bearer {api_key('NVIDIA_API_KEY')}", "Content-Type": "application/json"},
             json={"model": model.split(":", 1)[-1] if model.startswith("nvidia:") else model,
                   "temperature": 0, "max_tokens": 4096,
@@ -210,6 +210,10 @@ def call_json(spec: ModelSpec, system: str, prompt: str, retries: int = 4) -> di
                 mi = min(mi + 1, len(models) - 1) if spec.fallbacks else mi  # overloaded, move on
                 time.sleep(2)
             elif "429" in msg or "RESOURCE_EXHAUSTED" in msg or "rate" in msg.lower():
+                if current_role() == "live":
+                    # Someone is waiting on screen, so we do not sit out a rate limit: we give up on this call
+                    # quickly and let the caller fall back (the results simply stay in similarity order).
+                    break
                 time.sleep(30)
             else:
                 time.sleep(3 * attempt)

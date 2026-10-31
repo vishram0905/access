@@ -9,6 +9,7 @@ We split the work into three tiers so the user never waits on a cloud model:
 import json
 import re
 import time
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
 from .advisor import advise
@@ -85,26 +86,46 @@ def enrich(result: dict, callback=None) -> dict:
     set_role("live")  # draw on the share of each model's daily tokens we reserve for live searches
     trace, t0 = Trace(callback), time.time()
     profile, pool, near = result["profile"], result["shortlist"], result["near_misses"]
-    to_review = pool[:REVIEW_TOP] + near[:REVIEW_NEAR]  # the ranker still orders every eligible programme
+    from .config import PUBLIC
+    # On the hosted demo every model call shares a free per-minute token budget, so we keep each step to a single
+    # call: the reviewers read the top 10 and the ranker scores the top 10. Programmes further down keep their
+    # relevance order. Locally the reviewers see more and the ranker scores everything.
+    top_review, top_near, top_rank = (10, 0, 10) if PUBLIC else (REVIEW_TOP, REVIEW_NEAR, len(pool))
+    to_review = pool[:top_review] + near[:top_near]
     trace.start("critic")
-    reviews, errors = {}, []
-    for i in range(0, len(to_review), REVIEW_BATCH):
+    trace.start("ranker")
+
+    def reviewers():
+        set_role("live")
+        reviews, errors = {}, []
+        for i in range(0, len(to_review), REVIEW_BATCH):
+            try:
+                got = review_shortlist(profile, to_review[i:i + REVIEW_BATCH])
+                errors += got.pop("_errors", [])
+                reviews.update(got)
+            except Exception as e:
+                errors.append(f"{type(e).__name__}: {str(e)[:80]}")
+        return reviews, errors
+
+    def ranker():
+        set_role("live")
         try:
-            got = review_shortlist(profile, to_review[i:i + REVIEW_BATCH])
-            errors += got.pop("_errors", [])
-            reviews.update(got)
+            return rank(profile, pool[:top_rank], result.get("similarity", {})) + pool[top_rank:]
         except Exception as e:
-            errors.append(f"{type(e).__name__}: {str(e)[:80]}")
+            print(f"[enrich] ranker failed: {type(e).__name__}: {str(e)[:200]}", flush=True)
+            return pool  # keep the similarity order
+
+    # The reviewers and the ranker do not depend on each other, so we run them side by side: the visitor waits
+    # for the slower of the two instead of their sum.
+    with ThreadPoolExecutor(2) as ex:
+        f_rev, f_rank = ex.submit(reviewers), ex.submit(ranker)
+        reviews, errors = f_rev.result()
+        ranked = f_rank.result()
     for x in to_review:
         x["critic"] = reviews.get(x["id"], {})
     trace.done("critic", _models("critic_shortlist"),
                f"Reviewed {len(to_review)} programmes" + (f" ({len(errors)} reviewer errors)" if errors else ""),
                {"errors": errors[:5]})
-    trace.start("ranker")
-    try:
-        ranked = rank(profile, pool, result.get("similarity", {}))
-    except Exception:
-        ranked = pool  # keep the similarity order
     for x in ranked:
         rel = (x.get("critic") or {}).get("relevance")
         x["weaker_fit"] = bool((rel is not None and rel < MIN_RELEVANCE) or
@@ -116,6 +137,9 @@ def enrich(result: dict, callback=None) -> dict:
                f"Ranked {len(ranked)} programmes" + (f"; {unranked} kept in similarity order" if unranked else ""), {})
     result.update(enriched=True, trace=result.get("trace", []) + trace.events)
     result["timings"]["enrich_s"] = round(time.time() - t0, 1)
+    # One line per search in the server log, so slow or failing rankings on the hosted demo can be diagnosed.
+    print(f"[enrich] {result['timings']['enrich_s']} s, ranked {len(ranked) - unranked}/{len(ranked)} by "
+          f"{', '.join(used) or 'none'}, reviewer errors: {errors[:2]}", flush=True)
     return result
 
 

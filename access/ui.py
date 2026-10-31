@@ -257,6 +257,7 @@ button[kind="secondary"]:hover{border-color:var(--accent);color:var(--accent)}
 .score{border-left:1px solid var(--line);padding-left:22px;display:flex;flex-direction:column;justify-content:space-between;min-height:120px}
 .score small{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .score b{display:block;font-family:var(--serif);font-size:3.2rem;font-weight:600;line-height:1;letter-spacing:-.03em;color:var(--ink);margin-top:4px}
+.ranking{font-size:.74rem;color:var(--muted);margin-top:6px}
 .meter{height:5px;border-radius:9px;background:var(--soft);margin:10px 0 0;overflow:hidden}
 .meter i{display:block;height:100%;background:var(--accent);border-radius:9px}
 .status{display:inline-flex;align-items:center;gap:7px;font-size:.82rem;font-weight:600;color:var(--ok);margin-top:14px}

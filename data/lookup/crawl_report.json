@@ -1,16 +1,16 @@
 {
  "datalog_since": 1790934319.0,
- "requests": 142087,
- "handshakes": 134244,
+ "requests": 142129,
+ "handshakes": 134286,
  "no_handshake": 7843,
  "by_outcome": {
-  "Answered with a usable page": 99854,
+  "Answered with a usable page": 99892,
   "Answered but almost no text (often JavaScript-only)": 22755,
   "Could not connect (DNS, refused, reset)": 6279,
   "Page not found (404 / 410)": 3873,
   "Not a web page (PDF, image\u2026)": 3688,
   "Other HTTP status": 2172,
-  "Refused (bot protection / rate limit: 401, 403, 429\u2026)": 1780,
+  "Refused (bot protection / rate limit: 401, 403, 429\u2026)": 1784,
   "Skipped: robots.txt asks crawlers not to read it": 687,
   "No answer in time (timeout)": 544,
   "Certificate / TLS failure": 333,
@@ -58,11 +58,11 @@
   },
   "unknown": {
    "too_short": 6257,
-   "ok": 20641,
+   "ok": 20679,
    "robots": 274,
    "not_found": 2062,
    "not_html": 88,
-   "refused": 371,
+   "refused": 373,
    "connection": 1992,
    "server_error": 16,
    "ssl": 122,
@@ -71,7 +71,7 @@
   },
   "Global": {
    "ok": 23673,
-   "refused": 688,
+   "refused": 690,
    "connection": 1489,
    "too_short": 7565,
    "not_found": 807,
@@ -158,11 +158,11 @@
   },
   "unknown": {
    "too_short": 6257,
-   "ok": 20435,
+   "ok": 20473,
    "robots": 274,
    "not_found": 2062,
    "not_html": 88,
-   "refused": 371,
+   "refused": 373,
    "connection": 1988,
    "server_error": 16,
    "ssl": 122,
@@ -172,7 +172,7 @@
   "industry": {
    "ok": 3506,
    "connection": 136,
-   "refused": 255,
+   "refused": 257,
    "robots": 116,
    "not_found": 103,
    "ssl": 7,
@@ -194,16 +194,16 @@
  },
  "top_refusing_domains": [
   [
+   "www.forbes.com",
+   144
+  ],
+  [
    "www.datosabiertos.gob.pe",
    144
   ],
   [
-   "www.forbes.com",
-   142
-  ],
-  [
    "weinberg.northwestern.edu",
-   99
+   101
   ],
   [
    "meta.wikimedia.org",
@@ -259,8 +259,8 @@
   "transient": 608
  },
  "funnel": {
-  "pages_stored": 84789,
-  "dropped_free_filter": 48852,
+  "pages_stored": 84806,
+  "dropped_free_filter": 48869,
   "index_pages_turned_into_sites": 1909,
   "waiting_for_annotator": 27824,
   "waiting_for_judges": 4470,
