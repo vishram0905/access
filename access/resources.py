@@ -123,12 +123,20 @@ if PUBLIC:
     # The hosted demo runs no critic or auditor, so live searches there may use half of each model's day
     # (about 20 searches) instead of the fifth reserved for them on the research machine.
     ROLE_SHARE = {**ROLE_SHARE, "live": 0.50}
+# Models only the hosted demo calls. Nothing else draws on their quota, so live searches may use all of their day.
+DEDICATED_LIVE = {"openai/gpt-oss-20b"}
 ROLE_OF = {"critic_sources": "critic", "auditor": "auditor", "critic_shortlist": "live",
            "fit_ranker": "live", "profile_builder": "live", "advisor": "live"}
 
 
 class DailyBudgetExhausted(RuntimeError):
     pass
+
+
+def _share(limit: int, model: str, role: str) -> int:
+    """Tokens a role may use on a model per day: its share of the limit, or all of it on a dedicated live model."""
+    full = PUBLIC and role == "live" and model in DEDICATED_LIVE
+    return int(limit * (1.0 if full else ROLE_SHARE.get(role, 0.70)) * TPM_SAFETY)
 
 
 def _day_file(model: str):
@@ -155,7 +163,7 @@ def charge_daily(provider: str, model: str, role: str, tokens: int, check_only: 
     limit = TPD_LIMITS.get(provider)
     if not limit:
         return
-    share = int(limit * ROLE_SHARE.get(role, 0.70) * TPM_SAFETY)
+    share = _share(limit, model, role)
     path = _day_file(model)
     path.touch(exist_ok=True)
     with open(path, "r+") as fh:
@@ -244,7 +252,7 @@ def model_ready(provider: str, model: str, role: str, need: int = 4000) -> tuple
     limit = TPD_LIMITS.get(provider)
     if not limit:
         return True, 0.0
-    share = int(limit * ROLE_SHARE.get(role, 0.70) * TPM_SAFETY)
+    share = _share(limit, model, role)
     path = _day_file(model)
     rows = [r for r in _json.loads(path.read_text() or "[]") if r[1] == role] if path.exists() else []
     rows = sorted(r for r in rows if _time.time() - r[0] < 86400)

@@ -108,7 +108,9 @@ def _raw_call(spec: ModelSpec, system: str, prompt: str, model: str | None = Non
         )
         return r.text or ""
     if spec.provider == "groq":
-        est = resources.estimate_tokens(system, prompt)
+        # The default output allowance (1,200) suits the reasoning judges; at low effort the live ranker writes about
+        # 430 tokens a batch, and reserving 1,200 made its third batch wait a full minute for nothing.
+        est = resources.estimate_tokens(system, prompt, output=spec.out_tokens)
         resources.charge_daily("groq", model, current_role(), est, check_only=True)
         resources.reserve_tokens("groq", model, est, current_role())
         r = _client("groq").chat.completions.create(
@@ -116,6 +118,7 @@ def _raw_call(spec: ModelSpec, system: str, prompt: str, model: str | None = Non
             messages=[{"role": "system", "content": system}, {"role": "user", "content": prompt}],
             response_format={"type": "json_object"},
             temperature=0,
+            **dict(spec.options),
         )
         used = getattr(r, "usage", None)
         resources.charge_daily("groq", model, current_role(), used.total_tokens if used else est)

@@ -37,6 +37,8 @@ class ModelSpec:
     family: str    # who trained it; used to enforce panel diversity
     label: str     # human-readable name shown in the UI
     fallbacks: tuple = ()  # same-family backups we try when the main model is overloaded
+    options: tuple = ()    # extra request settings as (name, value) pairs, e.g. a reasoning effort
+    out_tokens: int = 1200  # output we reserve per call in the per-minute budget
 
     @property
     def where(self) -> str:
@@ -47,8 +49,14 @@ class ModelSpec:
 GEMINI_FLASH = ModelSpec("gemini", "gemini-flash-latest", "Google", "Gemini Flash",
                          fallbacks=("gemini-3.7-flash", "gemini-3.6-flash", "gemini-3.5-flash",
                                     "gemini-3.5-flash-lite", "gemini-flash-lite-latest", "gemma-4-31b-it"))
-GPT_OSS = ModelSpec("groq", "openai/gpt-oss-120b", "OpenAI", "GPT-OSS-120B",
-                    fallbacks=("openai/gpt-oss-20b",))
+# GPT-OSS-20B used to be this model's fallback. We took it away because the hosted demo now has it to itself (see
+# GPT_OSS_LIVE): Groq's limits are per model, so a model nothing else calls gives live searches a full minute and
+# day of quota that background judging can never eat into.
+GPT_OSS = ModelSpec("groq", "openai/gpt-oss-120b", "OpenAI", "GPT-OSS-120B")
+# The hosted demo's fit ranker. Low reasoning effort keeps a batch of ten at about 1,500 tokens and under a second;
+# against Qwen on the four test personas its fit order agreed closely (Spearman 0.96-1.0, same top three in 3 of 4).
+GPT_OSS_LIVE = ModelSpec("groq", "openai/gpt-oss-20b", "OpenAI", "GPT-OSS-20B",
+                         options=(("reasoning_effort", "low"),), out_tokens=600)
 QWEN_LARGE = ModelSpec("groq", "qwen/qwen3.8-27b", "Alibaba", "Qwen 27B")
 GEMINI_TEXT = ModelSpec("gemini", GEMINI_FLASH.model, "Google", "Gemini Flash",
                         [m for m in GEMINI_FLASH.fallbacks if not m.startswith("gemma")])
@@ -75,11 +83,12 @@ ROLES: dict[str, list[ModelSpec]] = {
     "profile_builder": [GEMINI_FLASH],
     "embedder": [EMBEDDER],
     # The public demo gets one fast cloud reviewer. There is no local model there, and Muse on NVIDIA timed out
-    # often enough to keep the spinner going.
-    "critic_shortlist": [GPT_OSS] if PUBLIC else [GPT_OSS, PHI_LOCAL],
-    # Fallbacks never come from the shortlist reviewers' company. The hosted demo falls back to Gemini, because the
-    # NVIDIA models answered with server errors from Streamlit Cloud.
-    "fit_ranker": [QWEN_LARGE, GEMINI_TEXT] if PUBLIC else [QWEN_LARGE, NEMOTRON, GLM],
+    # often enough to keep the spinner going. It is Qwen there because the ranker is OpenAI's, and the two must
+    # come from different companies.
+    "critic_shortlist": [QWEN_LARGE] if PUBLIC else [GPT_OSS, PHI_LOCAL],
+    # Fallbacks never come from the shortlist reviewers' company. The hosted demo ranks with its dedicated model and
+    # falls back to Gemini, because the NVIDIA models answered with server errors from Streamlit Cloud.
+    "fit_ranker": [GPT_OSS_LIVE, GEMINI_TEXT] if PUBLIC else [QWEN_LARGE, NEMOTRON, GLM],
     # The advisor writes rather than judges, so the first provider with quota wins. We leave Gemma out because it
     # was slow and often errored, and put Qwen last because it shares Groq's per-minute limit with ranking.
     "advisor": [GEMINI_TEXT, NEMOTRON, GLM, QWEN_LARGE],

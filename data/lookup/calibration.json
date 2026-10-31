@@ -2,7 +2,7 @@
  "high": 0.95,
  "medium": 0.3,
  "provisional": false,
- "audited": 483,
+ "audited": 490,
  "accuracy_high": 0.83,
  "accuracy_medium_and_up": 0.81,
  "by_trust_bin": {
@@ -19,12 +19,12 @@
    "agreement": 0.77
   },
   "0.8+": {
-   "rows": 130,
+   "rows": 131,
    "agreement": 0.79
   },
   "0.9+": {
-   "rows": 237,
-   "agreement": 0.82
+   "rows": 241,
+   "agreement": 0.83
   }
  },
  "catch_rate": {
@@ -49,5 +49,5 @@
    "tests": 11
   }
  },
- "calibrated_at": "2026-10-31T07:02:40+00:00"
+ "calibrated_at": "2026-10-31T08:22:44+00:00"
 }

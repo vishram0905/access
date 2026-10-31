@@ -87,10 +87,10 @@ def enrich(result: dict, callback=None) -> dict:
     trace, t0 = Trace(callback), time.time()
     profile, pool, near = result["profile"], result["shortlist"], result["near_misses"]
     from .config import PUBLIC
-    # On the hosted demo every model call shares a free per-minute token budget, so we keep each step to a single
-    # call: the reviewers read the top 10 and the ranker scores the top 10. Programmes further down keep their
-    # relevance order. Locally the reviewers see more and the ranker scores everything.
-    top_review, top_near, top_rank = (10, 0, 10) if PUBLIC else (REVIEW_TOP, REVIEW_NEAR, len(pool))
+    # On the hosted demo the reviewer shares a free per-minute token budget, so it reads the top 10 in one call.
+    # The ranker has a model of its own there (config.GPT_OSS_LIVE), so it scores the whole list, which is at most
+    # 25 programmes, three calls of about 1,500 tokens. Locally the reviewers see more as well.
+    top_review, top_near, top_rank = (10, 0, len(pool)) if PUBLIC else (REVIEW_TOP, REVIEW_NEAR, len(pool))
     to_review = pool[:top_review] + near[:top_near]
     trace.start("critic")
     trace.start("ranker")
