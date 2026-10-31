@@ -341,9 +341,14 @@ def show_results(res):
         if not short:
             st.info("No programme matches every rule yet. Check **Within reach** for options that need one "
                     "achievable step, such as a test score.")
-        divider = False
+        divider, unscored = False, False
+        scored = res.get("enriched") and any(x.get("fit") is not None for x in short)
         for pos, l in enumerate(short, 1):
-            if l.get("weaker_fit") and not divider and res.get("enriched"):
+            if scored and l.get("fit") is None and not unscored:
+                # Everything the ranker scored sits above this line, so the fit column stays consistent.
+                unscored = True
+                st.markdown("**Also eligible, not scored for fit** (shown in order of relevance)")
+            elif l.get("weaker_fit") and not divider and res.get("enriched") and not unscored:
                 divider = True
                 st.markdown("**Also eligible, but a weaker fit for your goals**")
             match_card(l, res, pos)

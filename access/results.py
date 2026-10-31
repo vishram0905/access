@@ -107,13 +107,17 @@ def by_availability(items: list[dict]) -> list[dict]:
 
 
 def final_order(items: list[dict]) -> list[dict]:
-    """Order the list after ranking: strong matches by score, then weaker fits by score, closed programmes last.
+    """Order the list after ranking: strong matches by score, then weaker fits by score, then anything the ranker
+    did not score (in similarity order), with closed programmes last.
+
+    Unscored programmes go after the weaker fits, not before them. The hosted app only scores the top ten to save
+    quota, and putting the unscored ones in the middle made the fit column jump from scores to ranks and back.
 
     We leave the host tier out here. It only orders the similarity list before ranking, and the ranker already
     weighs the researcher's countries.
     """
     closed = lambda x: (x.get("deadline_status") or {}).get("state") == "closed"
-    return sorted(items, key=lambda x: (closed(x), bool(x.get("weaker_fit")), x.get("fit") is None,
+    return sorted(items, key=lambda x: (closed(x), x.get("fit") is None, bool(x.get("weaker_fit")),
                                         -(x.get("score") or 0)))
 
 
