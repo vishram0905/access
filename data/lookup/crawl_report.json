@@ -1,23 +1,279 @@
 {
- "datalog_since": null,
- "requests": 0,
- "handshakes": 0,
- "no_handshake": 0,
- "by_outcome": {},
- "by_region": {},
- "by_provider_type": {},
- "top_refusing_domains": [],
- "sites": {},
- "site_failure_reasons": {},
+ "datalog_since": 1790934319.0,
+ "requests": 141933,
+ "handshakes": 134090,
+ "no_handshake": 7843,
+ "by_outcome": {
+  "Answered with a usable page": 99739,
+  "Answered but almost no text (often JavaScript-only)": 22731,
+  "Could not connect (DNS, refused, reset)": 6279,
+  "Page not found (404 / 410)": 3872,
+  "Not a web page (PDF, image\u2026)": 3682,
+  "Other HTTP status": 2172,
+  "Refused (bot protection / rate limit: 401, 403, 429\u2026)": 1772,
+  "Skipped: robots.txt asks crawlers not to read it": 687,
+  "No answer in time (timeout)": 544,
+  "Certificate / TLS failure": 333,
+  "Server error (5xx)": 122
+ },
+ "by_region": {
+  "Europe": {
+   "not_html": 2255,
+   "ok": 23250,
+   "not_found": 506,
+   "too_short": 4834,
+   "refused": 172,
+   "connection": 1192,
+   "robots": 131,
+   "ssl": 24,
+   "timeout": 120,
+   "other_status": 52,
+   "server_error": 17
+  },
+  "North America": {
+   "ok": 20511,
+   "too_short": 2172,
+   "refused": 218,
+   "ssl": 37,
+   "not_found": 244,
+   "connection": 795,
+   "robots": 16,
+   "not_html": 98,
+   "server_error": 29,
+   "timeout": 61,
+   "other_status": 1929
+  },
+  "Asia": {
+   "ok": 6347,
+   "too_short": 1282,
+   "not_found": 163,
+   "connection": 311,
+   "refused": 45,
+   "ssl": 115,
+   "robots": 7,
+   "timeout": 38,
+   "not_html": 463,
+   "server_error": 5,
+   "other_status": 9
+  },
+  "unknown": {
+   "too_short": 6253,
+   "ok": 20528,
+   "robots": 274,
+   "not_found": 2061,
+   "not_html": 88,
+   "refused": 368,
+   "connection": 1992,
+   "server_error": 16,
+   "ssl": 122,
+   "timeout": 124,
+   "other_status": 156
+  },
+  "Global": {
+   "ok": 23672,
+   "refused": 683,
+   "connection": 1489,
+   "too_short": 7545,
+   "not_found": 807,
+   "not_html": 767,
+   "robots": 227,
+   "other_status": 26,
+   "server_error": 47,
+   "timeout": 179,
+   "ssl": 30
+  },
+  "Asia-Pacific": {
+   "ok": 4739,
+   "connection": 293,
+   "refused": 139,
+   "not_found": 88,
+   "too_short": 445,
+   "server_error": 7,
+   "timeout": 10,
+   "ssl": 2,
+   "not_html": 11,
+   "robots": 32
+  },
+  "South America": {
+   "ok": 692,
+   "refused": 147,
+   "connection": 207,
+   "too_short": 200,
+   "server_error": 1,
+   "timeout": 12,
+   "not_found": 3,
+   "ssl": 3
+  }
+ },
+ "by_provider_type": {
+  "university": {
+   "not_html": 1174,
+   "ok": 34047,
+   "refused": 273,
+   "not_found": 667,
+   "connection": 2661,
+   "too_short": 5469,
+   "ssl": 52,
+   "robots": 71,
+   "timeout": 143,
+   "server_error": 21,
+   "other_status": 1445
+  },
+  "government": {
+   "ok": 6402,
+   "too_short": 1020,
+   "ssl": 105,
+   "connection": 280,
+   "not_found": 123,
+   "refused": 238,
+   "robots": 3,
+   "timeout": 67,
+   "server_error": 4,
+   "not_html": 442,
+   "other_status": 539
+  },
+  "foundation_charity": {
+   "ok": 32241,
+   "not_found": 905,
+   "too_short": 8140,
+   "refused": 535,
+   "connection": 1176,
+   "robots": 222,
+   "ssl": 47,
+   "not_html": 1696,
+   "timeout": 171,
+   "other_status": 23,
+   "server_error": 66
+  },
+  "intergovernmental": {
+   "ok": 2552,
+   "refused": 80,
+   "connection": 31,
+   "too_short": 207,
+   "not_found": 6,
+   "other_status": 1,
+   "not_html": 10,
+   "robots": 1,
+   "timeout": 4
+  },
+  "unknown": {
+   "too_short": 6253,
+   "ok": 20322,
+   "robots": 274,
+   "not_found": 2061,
+   "not_html": 88,
+   "refused": 368,
+   "connection": 1988,
+   "server_error": 16,
+   "ssl": 122,
+   "timeout": 124,
+   "other_status": 156
+  },
+  "industry": {
+   "ok": 3505,
+   "connection": 136,
+   "refused": 250,
+   "robots": 116,
+   "not_found": 103,
+   "ssl": 7,
+   "too_short": 1329,
+   "not_html": 272,
+   "timeout": 24,
+   "server_error": 15,
+   "other_status": 7
+  },
+  "research_institute": {
+   "ok": 670,
+   "refused": 28,
+   "too_short": 313,
+   "connection": 7,
+   "not_found": 7,
+   "other_status": 1,
+   "timeout": 11
+  }
+ },
+ "top_refusing_domains": [
+  [
+   "www.datosabiertos.gob.pe",
+   144
+  ],
+  [
+   "www.forbes.com",
+   137
+  ],
+  [
+   "weinberg.northwestern.edu",
+   96
+  ],
+  [
+   "meta.wikimedia.org",
+   74
+  ],
+  [
+   "euraxess.ec.europa.eu",
+   69
+  ],
+  [
+   "www.physoc.org",
+   69
+  ],
+  [
+   "community.geosociety.org",
+   59
+  ],
+  [
+   "de.wikipedia.org",
+   49
+  ],
+  [
+   "www.aucklandmuseum.com",
+   43
+  ],
+  [
+   "www.aalto.fi",
+   36
+  ]
+ ],
+ "sites": {
+  "crawling": 1,
+  "done": 5303,
+  "excluded": 7,
+  "failed": 179,
+  "given_up": 754,
+  "gone": 400,
+  "moved": 218,
+  "new": 239,
+  "protected": 961
+ },
+ "site_failure_reasons": {
+  "EXCLUDED_PLACES (12 Oct)": 7,
+  "archived_copy": 23,
+  "challenge": 66,
+  "js_only": 368,
+  "moved": 618,
+  "no_funding_links": 698,
+  "ok": 1167,
+  "protected": 752,
+  "robots": 97,
+  "ssl": 165,
+  "transient": 608
+ },
  "funnel": {
-  "pages_stored": 0,
-  "dropped_free_filter": 0,
-  "index_pages_turned_into_sites": 0,
-  "waiting_for_annotator": 0,
-  "waiting_for_judges": 0,
-  "judge_decisions": {},
-  "judge_rejection_reasons": {},
+  "pages_stored": 84726,
+  "dropped_free_filter": 48796,
+  "index_pages_turned_into_sites": 1909,
+  "waiting_for_annotator": 27817,
+  "waiting_for_judges": 4470,
+  "judge_decisions": {
+   "accepted": 1163,
+   "pending_full_panel": 70,
+   "rejected": 455
+  },
+  "judge_rejection_reasons": {
+   "Not a funding opportunity for individuals (judges' majority)": 452,
+   "Page does not describe this programme": 3
+  },
   "published_in_search": 629,
-  "known_programme_stubs": 0
+  "known_programme_stubs": 961
  }
 }

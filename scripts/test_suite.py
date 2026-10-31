@@ -422,9 +422,9 @@ def area_l():
         "Civil engineer with a master's degree interested in a PhD on flood risk and climate adaptation.")
     at.button(key="FormSubmitter:profile-Find opportunities").click().run()
     text = " ".join(str(m.value) for m in at.markdown)
-    m = re.search(r"Results for (\w+)", text)
+    m = re.search(r"Funding (\w+) can apply for", text)
     record("L", "L6", "A search typed into the form returns results without an exception",
-           not at.exception and bool(re.search(r"\d+ eligible", text)),
+           not at.exception and bool(re.search(r"(<b>)?\d+(</b>)? eligible", text)),
            (m.group(0) if m else "no results heading") + (f"; {len(at.exception)} exceptions" if at.exception else ""))
 
 

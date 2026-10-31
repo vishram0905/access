@@ -60,7 +60,7 @@ html, body, [class*="st-"], .stMarkdown, button, input, textarea, select{font-fa
 [data-testid="stIconMaterial"], [data-testid^="stExpanderIcon"], .material-symbols-rounded, .material-icons{font-family:'Material Symbols Rounded'!important}
 #MainMenu, footer, [data-testid="stToolbar"], [data-testid="stDecoration"], [data-testid="stSidebarCollapsedControl"]{display:none!important}
 header[data-testid="stHeader"]{height:0;background:transparent}
-.block-container{padding-top:1.2rem;max-width:1080px}
+.block-container{padding-top:1.2rem;max-width:1180px}
 h1,h2,h3{letter-spacing:-.02em;color:var(--ink)}
 .ic{display:inline-block;vertical-align:-2px;flex:none}
 
@@ -103,6 +103,48 @@ h1,h2,h3{letter-spacing:-.02em;color:var(--ink)}
 .trust span{display:flex;align-items:center;gap:7px}
 .trust i{font-style:normal;width:20px;height:20px;border-radius:50%;background:var(--ok-soft);color:var(--ok);
          display:grid;place-items:center}
+
+/* Two-column first screen on the search page */
+.hero-l{padding:18px 0 8px}
+.hero-l h1{font-family:'Source Serif 4',Georgia,serif;font-size:2.65rem;line-height:1.08;margin:0 0 14px;font-weight:700;
+           letter-spacing:-.02em}
+.hero-l .lead{color:var(--muted);font-size:1.02rem;line-height:1.65;margin:0 0 22px}
+.trust-list{list-style:none;padding:0;margin:0 0 24px}
+.trust-list li{display:flex;gap:12px;align-items:flex-start;margin:0 0 14px}
+.trust-list i{font-style:normal;width:26px;height:26px;border-radius:8px;background:var(--ok-soft);color:var(--ok);
+              display:grid;place-items:center;flex:none}
+.trust-list b{display:block;font-size:.92rem;color:var(--ink)}
+.trust-list span{font-size:.84rem;color:var(--muted)}
+.mini-stats{display:flex;gap:28px;padding-top:18px;border-top:1px solid var(--line)}
+.mini-stats b{display:block;font-size:1.35rem;letter-spacing:-.02em;color:var(--ink)}
+.mini-stats span{font-size:.78rem;color:var(--muted)}
+.form-head{display:flex;align-items:baseline;gap:10px;margin:22px 0 10px}
+.form-head b{font-size:1.05rem;color:var(--ink)}
+.form-head span{font-size:.85rem;color:var(--muted)}
+@media (max-width:640px){.hero-l h1{font-size:2rem}.mini-stats{gap:18px}}
+
+/* Results header: a title and the counts as pills */
+.results-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;
+              margin:34px 0 8px;padding-top:26px;border-top:1px solid var(--line)}
+.rh-kicker{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.rh-title{font-size:1.55rem;font-weight:750;letter-spacing:-.02em;color:var(--ink)}
+.rh-pills{display:flex;gap:8px;flex-wrap:wrap}
+.rs{font-size:.84rem;color:var(--body);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:5px 12px}
+.rs b{color:var(--ink)}
+.rs.ok{background:var(--ok-soft);border-color:#A7F3D0;color:var(--ok)} .rs.ok b{color:var(--ok)}
+.rs.amber{background:var(--amber-soft);border-color:#FDE68A;color:var(--amber)} .rs.amber b{color:var(--amber)}
+
+/* Result cards: a left accent and a hover lift, so each programme reads as one object */
+/* The key class lands on the card's inner block, so we style the bordered frame that directly wraps it. */
+[data-testid="stVerticalBlockBorderWrapper"]:has(> div > [class*="st-key-card-"]),
+[data-testid="stVerticalBlockBorderWrapper"]:has(> [class*="st-key-card-"]){border-left:3px solid var(--accent)!important;
+       box-shadow:var(--shadow);transition:box-shadow .15s;background:#fff}
+[data-testid="stVerticalBlockBorderWrapper"]:has(> div > [class*="st-key-near-"]),
+[data-testid="stVerticalBlockBorderWrapper"]:has(> [class*="st-key-near-"]){border-left:3px solid var(--amber)!important;
+       box-shadow:var(--shadow);background:#fff}
+[data-testid="stVerticalBlockBorderWrapper"]:has(> div > [class*="st-key-card-"]):hover{
+       box-shadow:0 2px 6px rgba(15,23,42,.06),0 12px 28px rgba(15,23,42,.07)}
+@media (max-width:640px){.trust-list span{display:none}.trust-list li{margin-bottom:8px}}
 
 /* Example researchers: one compact pill per person instead of two-line buttons. */
 .st-key-examples [data-testid="stButton"] button{border-radius:999px;min-height:38px;padding:4px 8px;max-width:100%;

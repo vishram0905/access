@@ -248,7 +248,7 @@ def match_card(l, res):
     if l.get("weaker_fit"):
         extra.append(chip("Eligible, but a weaker fit for your goals"))
     score = l.get("score") if res.get("enriched") and l.get("fit") is not None else None
-    with st.container(border=True):
+    with st.container(border=True, key=f"card-{l['id']}"):
         st.markdown(header_html(l, score) + chips_for(l, extra) +
                     (f"<p class='why'>{esc(H(l['why']))}</p>" if l.get("why") else "") + concerns_html(l),
                     unsafe_allow_html=True)
@@ -263,7 +263,7 @@ def match_card(l, res):
 
 def near_card(l, res):
     gaps = [c for c in l.get("gate", {}).get("checks", []) if c["status"] == "near"]
-    with st.container(border=True):
+    with st.container(border=True, key=f"near-{l['id']}"):
         st.markdown(header_html(l) + chips_for(l, [chip(f"Within reach · {len(gaps)} gap{'s' * (len(gaps) != 1)}",
                                                         "amber")]), unsafe_allow_html=True)
         if gaps:
@@ -285,9 +285,12 @@ def show_results(res):
     short, near = keep(short_all), keep(near_all)
     who = res.get("form", {}).get("name") or "you"
     strong = sum(not x.get("weaker_fit") for x in short)
-    summary = (f"{len(short)} eligible ({strong} strong match{'es' * (strong != 1)})" if res.get("enriched")
-               else f"{len(short)} eligible") + f" · {len(near)} within reach"
-    html_block(f"<div class='section-title'>Results for {esc(who)}</div><div class='section-sub'>{summary}</div>")
+    pills = (f"<span class='rs ok'><b>{len(short)}</b> eligible</span>"
+             + (f"<span class='rs'><b>{strong}</b> strong match{'es' * (strong != 1)}</span>" if res.get("enriched") else "")
+             + f"<span class='rs amber'><b>{len(near)}</b> within reach</span>")
+    html_block(f"<div class='results-head'><div><div class='rh-kicker'>Results</div>"
+               f"<div class='rh-title'>Funding {esc(who) if who != 'you' else 'you'} can apply for</div></div>"
+               f"<div class='rh-pills'>{pills}</div></div>")
     stt, prof = res.get("search_stats") or {}, res.get("profile") or {}
     if stt.get("after_filters") is not None:
         applied = stt.get("filters_applied") or {}
@@ -410,29 +413,39 @@ def run_enrichment(res, slot):
 # ------------------------------------------------------------------ page
 
 setup()
-html_block("""<div class='hero'><div class='eyebrow'>Scholarships · fellowships · research grants</div>
-<h1>Find research funding you're actually eligible for</h1>
-<p class='lead'>Describe yourself once. ACCESS checks every rule on the funder's official page, explains each
-decision, and drafts an application plan, including a route forward when you're only one step away.</p></div>
-<div class='trust'><span><i>CHECK</i>Official sources only</span><span><i>CHECK</i>Rules checked line by line</span>
-<span><i>CHECK</i>Verified by independent AI reviewers</span></div>""".replace("CHECK", icon("check", 12)))
-
 if not load_lookup()[0]:
     st.warning("The programme library is still being built. Please check back shortly.")
     st.stop()
 
-_, mid, _ = st.columns([0.06, 1, 0.06])
+# The first screen is split in two: what ACCESS does on the left, the search form on the right, so a visitor can
+# start a search without scrolling. On phones Streamlit stacks the two columns.
+pitch, mid = st.columns([0.9, 1.1], gap="large")
+with pitch:
+    lib = load_lookup()[0]
+    n_rules = sum(len(x.get("rules") or []) for x in lib)
+    html_block(f"""<div class='hero-l'><div class='eyebrow'>Scholarships · fellowships · research grants</div>
+<h1>Find research funding you're actually eligible for</h1>
+<p class='lead'>Describe yourself once. ACCESS checks every rule on the funder's official page, explains each
+decision, and drafts an application plan, including a route forward when you're only one step away.</p>
+<ul class='trust-list'><li><i>CHECK</i><div><b>Official sources only</b><span>Every programme comes from the
+funder's own website.</span></div></li><li><i>CHECK</i><div><b>Rules checked line by line</b><span>Plain code tests
+nationality, career stage, degree and deadline.</span></div></li><li><i>CHECK</i><div><b>Independently
+verified</b><span>Three AI judges from three companies check every claim.</span></div></li></ul>
+<div class='mini-stats'><div><b>{len(lib):,}</b><span>verified programmes</span></div>
+<div><b>{n_rules:,}</b><span>quoted rules</span></div><div><b>~0.4 s</b><span>to first results</span></div></div>
+</div>""".replace("CHECK", icon("check", 13)))
 with mid:
     # An example only fills in the form. Results still appear after "Find opportunities", so a visitor sees the
     # real search run instead of a pre-made answer.
-    html_block("<div class='hint'>No time to fill in the form? Load an example researcher, then press "
-               "<b>Find opportunities</b>.</div>")
+    html_block("<div class='form-head'><b>Start a search</b><span>or try an example researcher</span></div>")
     with st.container(key="examples"):
-        for col, label in zip(st.columns(len(PERSONAS)), PERSONAS):
-            first = label.split(" - ", 1)[0]
-            if col.button(f"{first} · {EXAMPLE_CAPTIONS.get(first, nice(PERSONAS[label].get('career_stage')))}",
-                          key=f"ex-{first}", use_container_width=True):
-                st.session_state.update(example=label, enrich_pending=False, show_closed=False, result=None)
+        names = list(PERSONAS)
+        for row in (names[:2], names[2:]):
+            for col, label in zip(st.columns(2), row):
+                first = label.split(" - ", 1)[0]
+                if col.button(f"{first} · {EXAMPLE_CAPTIONS.get(first, nice(PERSONAS[label].get('career_stage')))}",
+                              key=f"ex-{first}", use_container_width=True):
+                    st.session_state.update(example=label, enrich_pending=False, show_closed=False, result=None)
 
     p = PERSONAS.get(st.session_state.get("example") or "", {})
     k = st.session_state.get("example") or "blank"
