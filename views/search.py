@@ -127,29 +127,51 @@ def funding_text(l) -> str | None:
     return str(f)[:40] if f else None
 
 
-def chips_for(l, extra=()) -> str:
-    bits = [chip(human_title(l.get("opportunity_type") or l.get("type")), "acc")]
+def card_html(l, facts: list[str], score=None, status=("Eligible", "")) -> str:
+    """The top of a result card: provider line, title, key facts, the reason it fits and one quote from the funder.
+
+    We put the fit score in its own column on the right so the eye can scan scores down the page, and we show one
+    quote from the official page on the card itself, because "every decision is traceable" is the product's core
+    promise and should not hide inside an expander.
+    """
+    prov = " · ".join(esc(x) for x in (l.get("provider"), l.get("host_label") or l.get("host_country"),
+                                       human_title(l.get("opportunity_type") or l.get("type") or "")) if x)
+    quote = next((c.get("evidence") for c in l.get("gate", {}).get("checks", []) if c.get("evidence")
+                  and c["status"] == "pass"), None)
+    left = (f"<div class='rc-prov'>{prov}</div>"
+            f"<a class='res-title' href='{esc(l.get('url'))}' target='_blank'>"
+            f"{esc(l.get('display_name') or l.get('name'))}{icon('external', 15)}</a>"
+            f"<div class='facts'>{''.join(facts)}</div>"
+            + (f"<p class='why'>{esc(H(l['why']))}</p>" if l.get("why") else "")
+            + (f"<div class='quote-box'><b>From the official page</b>“{esc(quote[:220])}”</div>" if quote else "")
+            + concerns_html(l))
+    label, kind = status
+    tick = icon("check" if not kind else "alert", 11)
+    if score is not None:
+        right = (f"<div><small>Fit</small><b>{int(score)}</b><div class='meter'><i style='width:{int(score)}%'></i></div>"
+                 f"</div><div class='status {kind}'><i>{tick}</i>{label}</div>")
+    else:
+        right = f"<div><small>Fit</small><b style='color:var(--line)'>–</b></div><div class='status {kind}'><i>{tick}</i>{label}</div>"
+    return f"<div class='rc'><div>{left}</div><div class='score'>{right}</div></div>"
+
+
+def fact(text, ic=None, kind="") -> str:
+    return f"<span class='{kind}'>{icon(ic, 14) if ic else ''}{text}</span>"
+
+
+def card_facts(l) -> list[str]:
+    out = []
     money = funding_text(l)
     if money:
-        bits.append(chip(money, ic="wallet"))
+        out.append(fact(f"<b>{esc(money)}</b>", "wallet"))
     d = l.get("deadline_status") or {}
     if d:
-        bits.append(chip(d["label"], DEADLINE_CHIP[d["state"]], ic=DEADLINE_ICON[d["state"]]))
-    bits += list(extra)
-    if l.get("archived_at"):  # the funder's site blocks automated reading, so we verified a public archive copy
-        bits.append(chip(f"Official page, archived copy of {l['archived_at']}", "amber", ic="archive"))
+        out.append(fact(esc(d["label"]), DEADLINE_ICON[d["state"]], DEADLINE_CHIP[d["state"]]))
+    if l.get("archived_at"):
+        out.append(fact(f"Archived official page, {esc(l['archived_at'])}", "archive", "amber"))
     elif l.get("official_source") or (l.get("review") or {}).get("decision") in ("accepted", "accepted_with_warning"):
-        bits.append(chip("Official source", "ok", ic="shield"))
-    return "<div class='chips'>" + "".join(bits) + "</div>"
-
-
-def header_html(l, score=None) -> str:
-    sub = " · ".join(esc(x) for x in (l.get("provider"), l.get("host_label") or l.get("host_country")) if x)
-    ring = (f"<div class='fit' style='background:conic-gradient(#4338CA {int(score) * 3.6:.0f}deg,#E0E7FF 0deg)'>"
-            f"<div><b>{int(score)}</b><small>MATCH</small></div></div>" if score is not None else "")
-    return (f"<div class='res-top'><div><a class='res-title' href='{esc(l.get('url'))}' target='_blank'>"
-            f"{esc(l.get('display_name') or l.get('name'))}{icon('external', 14)}</a><div class='res-sub'>{sub}</div>"
-            f"</div>{ring}</div>")
+        out.append(fact("Official source", "shield", "ok"))
+    return out
 
 
 STATUS_ICON = {"pass": "check", "conditional": "clock", "fail": "x", "near": "alert", "unknown": "help"}
@@ -241,21 +263,17 @@ def match_card(l, res):
     checks = l.get("gate", {}).get("checks", [])
     met = sum(c["status"] == "pass" for c in checks)
     cond = sum(c["status"] == "conditional" for c in checks)
-    extra = [chip(f"{met} of {len(checks)} rules met", "ok", ic="check") if checks
-             else chip("No listed restrictions", "ok", ic="check")]
+    facts = card_facts(l) + [fact(f"<b>{met} of {len(checks)}</b> rules met", "check", "ok") if checks
+                             else fact("No listed restrictions", "check", "ok")]
     if cond:
-        extra.append(chip(f"{cond} met once your current degree is completed", "amber", ic="clock"))
-    if l.get("weaker_fit"):
-        extra.append(chip("Eligible, but a weaker fit for your goals"))
+        facts.append(fact(f"{cond} met once your current degree is completed", "clock", "amber"))
     score = l.get("score") if res.get("enriched") and l.get("fit") is not None else None
+    status = ("Eligible, weaker fit", "amber") if l.get("weaker_fit") else ("Eligible", "")
     with st.container(border=True, key=f"card-{l['id']}"):
-        st.markdown(header_html(l, score) + chips_for(l, extra) +
-                    (f"<p class='why'>{esc(H(l['why']))}</p>" if l.get("why") else "") + concerns_html(l),
-                    unsafe_allow_html=True)
-        c1, c2 = st.columns(2)
-        with c1, st.expander("Eligibility details"):
+        st.markdown(card_html(l, facts, score, status), unsafe_allow_html=True)
+        with st.expander("Eligibility details"):
             eligibility_details(l)
-        with c2, st.expander("Application plan", expanded=bool(l.get("advice"))):
+        with st.expander("Application plan", expanded=bool(l.get("advice"))):
             plan_block(l, res)
         with st.expander("Ask about this programme", expanded=bool(l.get("qa"))):
             ask_block(l, res)
@@ -264,14 +282,13 @@ def match_card(l, res):
 def near_card(l, res):
     gaps = [c for c in l.get("gate", {}).get("checks", []) if c["status"] == "near"]
     with st.container(border=True, key=f"near-{l['id']}"):
-        st.markdown(header_html(l) + chips_for(l, [chip(f"Within reach · {len(gaps)} gap{'s' * (len(gaps) != 1)}",
-                                                        "amber")]), unsafe_allow_html=True)
+        st.markdown(card_html(l, card_facts(l), None, (f"{len(gaps)} gap{'s' * (len(gaps) != 1)} to close", "amber")),
+                    unsafe_allow_html=True)
         if gaps:
             html_block("".join(check_row("near", "Gap: " + H(g["why"])) for g in gaps))
-        c1, c2 = st.columns(2)
-        with c1, st.expander("All eligibility checks"):
+        with st.expander("All eligibility checks"):
             eligibility_details(l)
-        with c2, st.expander("How to close the gap", expanded=bool(l.get("advice"))):
+        with st.expander("How to close the gap", expanded=bool(l.get("advice"))):
             plan_block(l, res, near=True)
         with st.expander("Ask about this programme", expanded=bool(l.get("qa"))):
             ask_block(l, res)
@@ -288,9 +305,9 @@ def show_results(res):
     pills = (f"<span class='rs ok'><b>{len(short)}</b> eligible</span>"
              + (f"<span class='rs'><b>{strong}</b> strong match{'es' * (strong != 1)}</span>" if res.get("enriched") else "")
              + f"<span class='rs amber'><b>{len(near)}</b> within reach</span>")
-    html_block(f"<div class='results-head'><div><div class='rh-kicker'>Results</div>"
-               f"<div class='rh-title'>Funding {esc(who) if who != 'you' else 'you'} can apply for</div></div>"
-               f"<div class='rh-pills'>{pills}</div></div>")
+    title = f"{len(short)} programme{'s' * (len(short) != 1)} {esc(who)} can apply for"
+    html_block(f"<div class='results-head'><div><div class='rh-kicker'>Your results</div>"
+               f"<div class='rh-title'>{title}</div></div><div class='rh-pills'>{pills}</div></div>")
     stt, prof = res.get("search_stats") or {}, res.get("profile") or {}
     if stt.get("after_filters") is not None:
         applied = stt.get("filters_applied") or {}
@@ -419,25 +436,23 @@ if not load_lookup()[0]:
 
 # The first screen is split in two: what ACCESS does on the left, the search form on the right, so a visitor can
 # start a search without scrolling. On phones Streamlit stacks the two columns.
-pitch, mid = st.columns([0.9, 1.1], gap="large")
+pitch, mid = st.columns([1.02, 0.98], gap="large")
 with pitch:
     lib = load_lookup()[0]
     n_rules = sum(len(x.get("rules") or []) for x in lib)
-    html_block(f"""<div class='hero-l'><div class='eyebrow'>Scholarships · fellowships · research grants</div>
-<h1>Find research funding you're actually eligible for</h1>
-<p class='lead'>Describe yourself once. ACCESS checks every rule on the funder's official page, explains each
-decision, and drafts an application plan, including a route forward when you're only one step away.</p>
-<ul class='trust-list'><li><i>CHECK</i><div><b>Official sources only</b><span>Every programme comes from the
-funder's own website.</span></div></li><li><i>CHECK</i><div><b>Rules checked line by line</b><span>Plain code tests
-nationality, career stage, degree and deadline.</span></div></li><li><i>CHECK</i><div><b>Independently
-verified</b><span>Three AI judges from three companies check every claim.</span></div></li></ul>
-<div class='mini-stats'><div><b>{len(lib):,}</b><span>verified programmes</span></div>
-<div><b>{n_rules:,}</b><span>quoted rules</span></div><div><b>~0.4 s</b><span>to first results</span></div></div>
-</div>""".replace("CHECK", icon("check", 13)))
-with mid:
-    # An example only fills in the form. Results still appear after "Find opportunities", so a visitor sees the
-    # real search run instead of a pre-made answer.
-    html_block("<div class='form-head'><b>Start a search</b><span>or try an example researcher</span></div>")
+    html_block(f"""<div class='hero-l'><div class='eyebrow'>Verified research funding</div>
+<h1>Only the funding you can <em>actually</em> apply for.</h1>
+<p class='lead'>ACCESS reads every rule on the funder's official page, checks it against your profile, and shows
+you the sentence behind each decision.</p>
+<div class='proof'><div><b>{len(lib):,}</b><span>verified programmes</span></div>
+<div><b>{n_rules:,}</b><span>rules, each quoted</span></div><div><b>0.4 s</b><span>to your shortlist</span></div></div>
+<div class='pull'><i>“</i><div>Three AI judges from three different companies check every claim. Plain code makes
+every eligibility decision.</div></div></div>""")
+with mid, st.container(key="formcard"):
+    # An example only fills in the form. Results still appear after "Find my funding", so a visitor sees the real
+    # search run instead of a pre-made answer.
+    html_block("<div class='form-title'>Tell us about you</div>"
+               "<div class='form-sub'>About two minutes. Or start from an example researcher.</div>")
     with st.container(key="examples"):
         names = list(PERSONAS)
         for row in (names[:2], names[2:]):
@@ -450,7 +465,7 @@ with mid:
     p = PERSONAS.get(st.session_state.get("example") or "", {})
     k = st.session_state.get("example") or "blank"
     with st.form("profile", border=True):
-        about = st.text_area("Tell us about your research and goals", p.get("about", ""), height=100,
+        about = st.text_area("Your research and goals", p.get("about", ""), height=100,
                              key=f"about-{k}", placeholder="e.g. I'm finishing a master's in computer science and "
                                                            "want a funded PhD in trustworthy machine learning, "
                                                            "ideally in Asia.")
@@ -496,7 +511,7 @@ with mid:
                                  "Searches are kept on this computer, without my name, to evaluate the system, and "
                                  "are never shared."),
                               key=f"consent-{k}", value=bool(p))
-        go = st.form_submit_button("Find opportunities", type="primary", use_container_width=True)
+        go = st.form_submit_button("Find my funding  →", type="primary", use_container_width=True)
 
     if go:
         if not consent:

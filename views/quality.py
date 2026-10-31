@@ -41,7 +41,7 @@ if rates:
     c2.altair_chart(alt.Chart(df).mark_bar(cornerRadiusEnd=6, height=18).encode(
         x=alt.X("Caught:Q", scale=alt.Scale(domain=[0, 100]), title="% caught"),
         y=alt.Y("Planted error:N", sort="-x", title=None),
-        color=alt.Color("Caught:Q", scale=alt.Scale(domain=[0, 50, 100], range=["#EF4444", "#F59E0B", "#10B981"]),
+        color=alt.Color("Caught:Q", scale=alt.Scale(domain=[0, 50, 100], range=["#B23B3B", "#C8642B", "#2E7D4F"]),
                         legend=None),
         tooltip=["Planted error", "Caught", "Tests"]).properties(height=200), use_container_width=True)
     def listing(xs):

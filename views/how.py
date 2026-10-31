@@ -15,27 +15,27 @@ def who(role: str) -> str:
 
 
 html_block("""<style>
-.how-hero{text-align:center;padding:18px 0 4px}
-.how-hero h1{font-family:'Source Serif 4',Georgia,serif;font-size:2.5rem;margin:0 0 10px}
+.how-hero{text-align:center;padding:40px 0 4px}
+.how-hero h1{margin:0 auto 12px}
 .how-hero p{color:var(--muted);max-width:680px;margin:0 auto;font-size:1.04rem}
 .guide{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:16px 0 4px;font-size:.82rem;color:var(--muted)}
 .phases{display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr;align-items:stretch;margin:22px 0 8px}
-.phase{border-radius:18px;padding:18px;border:1px solid var(--line);background:#fff;text-decoration:none!important}
+.phase{border-radius:18px;padding:20px;border:1px solid var(--line);background:#fff;text-decoration:none!important;box-shadow:var(--shadow)}
 .phase:hover{box-shadow:0 6px 24px rgba(15,23,42,.07)}
-.phase .tag{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.phase .tag{font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
 .phase h3{margin:6px 0 6px;font-size:1.12rem;color:var(--ink)!important}
 .phase p{color:#475569;font-size:.88rem;margin:0;line-height:1.5}
 .phase .ico{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:#fff;
             border:1px solid var(--line);margin-bottom:10px}
-.p1 .ico{color:#4338CA} .p2 .ico{color:#0E7490} .p3 .ico{color:#047857}
+.p1 .ico{color:#1B2A3A} .p2 .ico{color:#2F6690} .p3 .ico{color:#C8642B}
 .guide span{display:inline-flex;align-items:center;gap:6px}
 .arrow{display:grid;place-items:center;color:#94A3B8;font-size:1.4rem}
-.p1{background:linear-gradient(180deg,#EEF2FF,#fff)} .p1 .tag{color:#4338CA}
-.p2{background:linear-gradient(180deg,#ECFEFF,#fff)} .p2 .tag{color:#0E7490}
-.p3{background:linear-gradient(180deg,#ECFDF5,#fff)} .p3 .tag{color:#047857}
+.p1{background:#fff} .p1 .tag{color:#1B2A3A}
+.p2{background:#fff} .p2 .tag{color:#2F6690}
+.p3{background:#fff} .p3 .tag{color:#C8642B}
 .phase-head{display:flex;align-items:center;gap:12px;margin:38px 0 4px}
 .phase-head .badge{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:#fff;font-weight:800}
-.phase-head h2{margin:0;font-size:1.5rem}
+.phase-head h2{margin:0;font-family:var(--serif);font-weight:600;font-size:1.8rem}
 .phase-intro{color:var(--muted);margin:2px 0 14px 50px;max-width:760px}
 .stepper{position:relative;margin-left:18px;padding-left:32px;border-left:2px dashed #CBD5E1}
 .step{position:relative;margin:0 0 16px;border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:#fff}
@@ -48,13 +48,13 @@ details.tech{margin-top:8px;font-size:.85rem;color:#475569}
 details.tech summary{cursor:pointer;color:var(--accent);font-weight:600;font-size:.8rem;list-style:none}
 details.tech summary::before{content:"＋ "} details.tech[open] summary::before{content:"－ "}
 details.tech div{margin-top:6px;padding:10px 12px;background:var(--soft);border-radius:10px;line-height:1.55}
-.c1{color:#4338CA} .c2{color:#0E7490} .c3{color:#047857}
+.c1{color:#1B2A3A} .c2{color:#2F6690} .c3{color:#C8642B}
 .fig{border:1px solid var(--line);border-radius:18px;padding:20px;margin:14px 0;background:#fff}
 .fig h4{margin:0 0 4px} .fig .cap{color:var(--muted);font-size:.86rem;margin-bottom:14px}
 .flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center}
 .box{border:1px solid var(--line);border-radius:12px;padding:10px 12px;text-align:center;font-size:.84rem;background:#fff;min-width:120px}
 .box b{display:block;font-size:.9rem}
-.box.g{background:#EEF2FF;border-color:#C7D2FE}
+.box.g{background:#F7E6DA;border-color:#EFCDB6}
 .judges{display:flex;flex-direction:column;gap:6px}
 .vote{display:grid;grid-template-columns:1fr;gap:6px}
 .out{border-radius:12px;padding:10px 12px;font-size:.84rem}
@@ -117,7 +117,7 @@ explained in plain language.</p></div>
            .replace("ICON_TARGET", icon("target", 18)))
 
 # ------------------------------------------------------------------ phase 1
-phase(1, "c1", "#4338CA", "Build a verified library",
+phase(1, "c1", "#1B2A3A", "Build a verified library",
       "This happens in the background, before anyone searches. Six cooperating agents keep the library growing "
       "and up to date, so searches are fast and every fact can be traced back to an official page.", [
           step(1, "c1", "Scout: find where funding is published",
@@ -207,12 +207,12 @@ final call. No model ever checks its own work.</div>
 <div class='fig'><h4>Figure 2 · What goes into the trust score</h4>
 <div class='cap'>Six signals, weighted. A record must score high enough before it can appear in search results.</div>
 <div class='bar'>
- <div style='width:25%;background:#4338CA'>Official<br>source 25%</div>
- <div style='width:20%;background:#6366F1'>Funding<br>confirmed 20%</div>
- <div style='width:20%;background:#0EA5E9'>Rules<br>supported 20%</div>
- <div style='width:20%;background:#14B8A6'>Quotes<br>found 20%</div>
- <div style='width:10%;background:#10B981'>Agree<br>10%</div>
- <div style='width:5%;background:#84CC16'>✓</div></div>
+ <div style='width:25%;background:#1B2A3A'>Official<br>source 25%</div>
+ <div style='width:20%;background:#2F6690'>Funding<br>confirmed 20%</div>
+ <div style='width:20%;background:#4F85AE'>Rules<br>supported 20%</div>
+ <div style='width:20%;background:#C8642B'>Quotes<br>found 20%</div>
+ <div style='width:10%;background:#E0915F'>Agree<br>10%</div>
+ <div style='width:5%;background:#2E7D4F'>✓</div></div>
 <div class='legend'>
  <span><b>Official source</b>: published by the funder itself</span>
  <span><b>Funding confirmed</b>: judges agree it is real funding</span>
@@ -223,7 +223,7 @@ final call. No model ever checks its own work.</div>
 """)
 
 # ------------------------------------------------------------------ phase 2
-phase(2, "c2", "#0E7490", "Understand the researcher",
+phase(2, "c2", "#2F6690", "Understand the researcher",
       "A search starts with a short form. Fixed facts, such as nationality, are taken exactly as entered. "
       "The free-text description is turned into fields and keywords the system can work with.", [
           step(1, "c2", "Profile form",
@@ -243,7 +243,7 @@ phase(2, "c2", "#0E7490", "Understand the researcher",
       ])
 
 # ------------------------------------------------------------------ phase 3
-phase(3, "c3", "#047857", "Match, check and advise",
+phase(3, "c3", "#C8642B", "Match, check and advise",
       "The answer appears in about a second, because everything up to the eligibility decision runs without "
       "online AI. The AI then refines the order in the background, and writes an application plan only when a "
       "programme is opened. Eligibility itself is decided by plain code, so the same profile always gets the "

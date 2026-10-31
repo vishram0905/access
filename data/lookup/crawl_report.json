@@ -1,16 +1,16 @@
 {
  "datalog_since": 1790934319.0,
- "requests": 141933,
- "handshakes": 134090,
+ "requests": 142025,
+ "handshakes": 134182,
  "no_handshake": 7843,
  "by_outcome": {
-  "Answered with a usable page": 99739,
-  "Answered but almost no text (often JavaScript-only)": 22731,
+  "Answered with a usable page": 99799,
+  "Answered but almost no text (often JavaScript-only)": 22751,
   "Could not connect (DNS, refused, reset)": 6279,
-  "Page not found (404 / 410)": 3872,
-  "Not a web page (PDF, image\u2026)": 3682,
+  "Page not found (404 / 410)": 3873,
+  "Not a web page (PDF, image\u2026)": 3688,
   "Other HTTP status": 2172,
-  "Refused (bot protection / rate limit: 401, 403, 429\u2026)": 1772,
+  "Refused (bot protection / rate limit: 401, 403, 429\u2026)": 1777,
   "Skipped: robots.txt asks crawlers not to read it": 687,
   "No answer in time (timeout)": 544,
   "Certificate / TLS failure": 333,
@@ -18,7 +18,7 @@
  },
  "by_region": {
   "Europe": {
-   "not_html": 2255,
+   "not_html": 2258,
    "ok": 23250,
    "not_found": 506,
    "too_short": 4834,
@@ -44,7 +44,7 @@
    "other_status": 1929
   },
   "Asia": {
-   "ok": 6347,
+   "ok": 6348,
    "too_short": 1282,
    "not_found": 163,
    "connection": 311,
@@ -52,17 +52,17 @@
    "ssl": 115,
    "robots": 7,
    "timeout": 38,
-   "not_html": 463,
+   "not_html": 464,
    "server_error": 5,
    "other_status": 9
   },
   "unknown": {
    "too_short": 6253,
-   "ok": 20528,
+   "ok": 20586,
    "robots": 274,
-   "not_found": 2061,
+   "not_found": 2062,
    "not_html": 88,
-   "refused": 368,
+   "refused": 370,
    "connection": 1992,
    "server_error": 16,
    "ssl": 122,
@@ -70,12 +70,12 @@
    "other_status": 156
   },
   "Global": {
-   "ok": 23672,
-   "refused": 683,
+   "ok": 23673,
+   "refused": 686,
    "connection": 1489,
-   "too_short": 7545,
+   "too_short": 7565,
    "not_found": 807,
-   "not_html": 767,
+   "not_html": 769,
    "robots": 227,
    "other_status": 26,
    "server_error": 47,
@@ -107,12 +107,12 @@
  },
  "by_provider_type": {
   "university": {
-   "not_html": 1174,
+   "not_html": 1177,
    "ok": 34047,
    "refused": 273,
    "not_found": 667,
    "connection": 2661,
-   "too_short": 5469,
+   "too_short": 5489,
    "ssl": 52,
    "robots": 71,
    "timeout": 143,
@@ -120,7 +120,7 @@
    "other_status": 1445
   },
   "government": {
-   "ok": 6402,
+   "ok": 6403,
    "too_short": 1020,
    "ssl": 105,
    "connection": 280,
@@ -129,7 +129,7 @@
    "robots": 3,
    "timeout": 67,
    "server_error": 4,
-   "not_html": 442,
+   "not_html": 443,
    "other_status": 539
   },
   "foundation_charity": {
@@ -140,7 +140,7 @@
    "connection": 1176,
    "robots": 222,
    "ssl": 47,
-   "not_html": 1696,
+   "not_html": 1698,
    "timeout": 171,
    "other_status": 23,
    "server_error": 66
@@ -158,11 +158,11 @@
   },
   "unknown": {
    "too_short": 6253,
-   "ok": 20322,
+   "ok": 20380,
    "robots": 274,
-   "not_found": 2061,
+   "not_found": 2062,
    "not_html": 88,
-   "refused": 368,
+   "refused": 370,
    "connection": 1988,
    "server_error": 16,
    "ssl": 122,
@@ -170,9 +170,9 @@
    "other_status": 156
   },
   "industry": {
-   "ok": 3505,
+   "ok": 3506,
    "connection": 136,
-   "refused": 250,
+   "refused": 253,
    "robots": 116,
    "not_found": 103,
    "ssl": 7,
@@ -199,11 +199,11 @@
   ],
   [
    "www.forbes.com",
-   137
+   140
   ],
   [
    "weinberg.northwestern.edu",
-   96
+   98
   ],
   [
    "meta.wikimedia.org",
@@ -259,10 +259,10 @@
   "transient": 608
  },
  "funnel": {
-  "pages_stored": 84726,
-  "dropped_free_filter": 48796,
+  "pages_stored": 84758,
+  "dropped_free_filter": 48825,
   "index_pages_turned_into_sites": 1909,
-  "waiting_for_annotator": 27817,
+  "waiting_for_annotator": 27820,
   "waiting_for_judges": 4470,
   "judge_decisions": {
    "accepted": 1163,

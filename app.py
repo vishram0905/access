@@ -7,4 +7,5 @@ st.set_page_config(page_title="ACCESS Â· Research funding finder", page_icon="ğŸ
                    initial_sidebar_state="collapsed")
 nav = st.navigation([st.Page(path, title=title, default=(i == 0)) for i, (path, title) in enumerate(PAGES)],
                     position="hidden")
+st.session_state["current_page"] = nav.title  # read by access.ui.setup() to underline the active menu item
 nav.run()

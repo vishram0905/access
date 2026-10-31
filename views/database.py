@@ -15,7 +15,7 @@ from access.db import connect
 from access.logtail import tail_lines
 from access.lookup import LOOKUP, load as load_lookup
 from access.schema import human, human_title
-from access.ui import html_block, esc, footer, nice, setup
+from access.ui import html_block, esc, footer, nice, setup, stats_panel
 
 AGENTS = DATA / "agents"
 AGENT_NAMES = {"scout": "Scout", "scraper": "Scraper + Annotator", "critic": "Judge panel", "auditor": "Auditor",
@@ -72,7 +72,7 @@ def agent_status() -> list[tuple[str, str, str]]:
 
 def bar_chart(counts: dict, label: str):
     df = pd.DataFrame({"name": [human_title(k) for k in counts], "n": list(counts.values())})
-    return (alt.Chart(df).mark_bar(cornerRadiusEnd=6, color="#6366F1", height=18)
+    return (alt.Chart(df).mark_bar(cornerRadiusEnd=6, color="#2F6690", height=18)
             .encode(x=alt.X("n:Q", title=None, axis=alt.Axis(grid=False, labels=False, ticks=False, domain=False)),
                     y=alt.Y("name:N", sort="-x", title=None, axis=alt.Axis(labelLimit=180, ticks=False, domain=False)),
                     tooltip=[alt.Tooltip("name:N", title=label), alt.Tooltip("n:Q", title="Programmes")])
@@ -101,8 +101,8 @@ def real_countries(xs) -> int:
 
 countries = real_countries(programs)
 
-html_block("""<div class='hero' style='padding-top:6px'><div class='eyebrow'>Database</div>
-<h1 style='font-size:2.3rem'>A verified library of research funding</h1>
+html_block("""<div class='hero'><div class='eyebrow'>The library</div>
+<h1>A verified library of research funding</h1>
 <p class='lead'>Built and checked continuously by AI agents. Every programme below was verified against its
 official page by three independent AI judges.</p></div>""")
 
@@ -114,6 +114,11 @@ html_block(f"""<div class='kpis'>
 <div class='kpi'><b>{countries}</b><span>host countries</span></div>
 <div class='kpi'><b>{sum(sites.values()):,}</b><span>funding websites discovered</span></div>
 </div><div class='muted' style='font-size:.8rem;text-align:right'>{stamp}</div>""")
+
+# The live system panel (crawler rate, queues, model quotas) is for whoever runs the agents, so we keep it behind
+# a switch here instead of in the main menu.
+if st.toggle("Show live system stats", key="stats_toggle"):
+    stats_panel()
 
 tab1, tab2, tab3 = st.tabs(["Build progress", "Explore the data", "Crawl log & limits"])
 
@@ -160,9 +165,9 @@ with tab1:
         df["total"] = df["verified"].cumsum()
         html_block("<div class='section-title'>Growth</div><div class='section-sub'>Verified programmes published to the "
                     "library, cumulative (UTC dates).</div>")
-        st.altair_chart(alt.Chart(df).mark_area(line={"color": "#4338CA"}, color=alt.Gradient(
-            gradient="linear", stops=[alt.GradientStop(color="#C7D2FE", offset=0),
-                                      alt.GradientStop(color="#ffffff", offset=1)], x1=1, x2=1, y1=1, y2=0),
+        st.altair_chart(alt.Chart(df).mark_area(line={"color": "#C8642B"}, color=alt.Gradient(
+            gradient="linear", stops=[alt.GradientStop(color="#F7E6DA", offset=0),
+                                      alt.GradientStop(color="#FBF8F3", offset=1)], x1=1, x2=1, y1=1, y2=0),
             point=True).encode(x=alt.X("day:T", title=None, axis=alt.Axis(format="%d %b", tickCount="day")),
                                y=alt.Y("total:Q", title=None), tooltip=["day:T", "verified:Q", "total:Q"])
             .properties(height=220), use_container_width=True)
