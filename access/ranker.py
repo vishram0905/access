@@ -85,4 +85,6 @@ def rank(profile: dict, candidates: list[dict], similarity: dict[str, float]) ->
         score = round(0.7 * fit + 0.3 * sim100) if fit is not None else round(sim100)
         out.append({**c, "fit": fit, "why": r.get("why", ""), "similarity": round(sim, 3), "score": score,
                     "ranked_by": "ai+similarity" if fit is not None else "similarity", "ranker": by.get(c["id"])})
-    return sorted(out, key=lambda x: -x["score"])
+    # Programmes the model scored come first. A similarity-only score is on a different footing, so an item the model
+    # skipped should not land between two fit scores.
+    return sorted(out, key=lambda x: (x["fit"] is None, -x["score"]))

@@ -113,7 +113,8 @@ def final_order(items: list[dict]) -> list[dict]:
     weighs the researcher's countries.
     """
     closed = lambda x: (x.get("deadline_status") or {}).get("state") == "closed"
-    return sorted(items, key=lambda x: (closed(x), bool(x.get("weaker_fit")), -(x.get("score") or 0)))
+    return sorted(items, key=lambda x: (closed(x), bool(x.get("weaker_fit")), x.get("fit") is None,
+                                        -(x.get("score") or 0)))
 
 
 def tidy(items: list[dict]) -> list[dict]:
