@@ -1,16 +1,16 @@
 {
  "datalog_since": 1790934319.0,
- "requests": 142129,
- "handshakes": 134286,
+ "requests": 142235,
+ "handshakes": 134392,
  "no_handshake": 7843,
  "by_outcome": {
-  "Answered with a usable page": 99892,
-  "Answered but almost no text (often JavaScript-only)": 22755,
+  "Answered with a usable page": 99971,
+  "Answered but almost no text (often JavaScript-only)": 22775,
   "Could not connect (DNS, refused, reset)": 6279,
   "Page not found (404 / 410)": 3873,
   "Not a web page (PDF, image\u2026)": 3688,
   "Other HTTP status": 2172,
-  "Refused (bot protection / rate limit: 401, 403, 429\u2026)": 1784,
+  "Refused (bot protection / rate limit: 401, 403, 429\u2026)": 1791,
   "Skipped: robots.txt asks crawlers not to read it": 687,
   "No answer in time (timeout)": 544,
   "Certificate / TLS failure": 333,
@@ -32,7 +32,7 @@
   },
   "North America": {
    "ok": 20511,
-   "too_short": 2172,
+   "too_short": 2176,
    "refused": 218,
    "ssl": 37,
    "not_found": 244,
@@ -57,12 +57,12 @@
    "other_status": 9
   },
   "unknown": {
-   "too_short": 6257,
-   "ok": 20679,
+   "too_short": 6263,
+   "ok": 20732,
    "robots": 274,
    "not_found": 2062,
    "not_html": 88,
-   "refused": 373,
+   "refused": 376,
    "connection": 1992,
    "server_error": 16,
    "ssl": 122,
@@ -70,10 +70,10 @@
    "other_status": 156
   },
   "Global": {
-   "ok": 23673,
-   "refused": 690,
+   "ok": 23699,
+   "refused": 694,
    "connection": 1489,
-   "too_short": 7565,
+   "too_short": 7575,
    "not_found": 807,
    "not_html": 769,
    "robots": 227,
@@ -108,11 +108,11 @@
  "by_provider_type": {
   "university": {
    "not_html": 1177,
-   "ok": 34047,
+   "ok": 34073,
    "refused": 273,
    "not_found": 667,
    "connection": 2661,
-   "too_short": 5489,
+   "too_short": 5503,
    "ssl": 52,
    "robots": 71,
    "timeout": 143,
@@ -157,12 +157,12 @@
    "timeout": 4
   },
   "unknown": {
-   "too_short": 6257,
-   "ok": 20473,
+   "too_short": 6263,
+   "ok": 20526,
    "robots": 274,
    "not_found": 2062,
    "not_html": 88,
-   "refused": 373,
+   "refused": 376,
    "connection": 1988,
    "server_error": 16,
    "ssl": 122,
@@ -172,7 +172,7 @@
   "industry": {
    "ok": 3506,
    "connection": 136,
-   "refused": 257,
+   "refused": 261,
    "robots": 116,
    "not_found": 103,
    "ssl": 7,
@@ -195,7 +195,7 @@
  "top_refusing_domains": [
   [
    "www.forbes.com",
-   144
+   148
   ],
   [
    "www.datosabiertos.gob.pe",
@@ -203,7 +203,7 @@
   ],
   [
    "weinberg.northwestern.edu",
-   101
+   104
   ],
   [
    "meta.wikimedia.org",
@@ -259,10 +259,10 @@
   "transient": 608
  },
  "funnel": {
-  "pages_stored": 84806,
-  "dropped_free_filter": 48869,
+  "pages_stored": 84850,
+  "dropped_free_filter": 48912,
   "index_pages_turned_into_sites": 1909,
-  "waiting_for_annotator": 27824,
+  "waiting_for_annotator": 27825,
   "waiting_for_judges": 4470,
   "judge_decisions": {
    "accepted": 1163,

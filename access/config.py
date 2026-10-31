@@ -77,7 +77,9 @@ ROLES: dict[str, list[ModelSpec]] = {
     # The public demo gets one fast cloud reviewer. There is no local model there, and Muse on NVIDIA timed out
     # often enough to keep the spinner going.
     "critic_shortlist": [GPT_OSS] if PUBLIC else [GPT_OSS, PHI_LOCAL],
-    "fit_ranker": [QWEN_LARGE, NEMOTRON, GLM],  # fallbacks never come from the shortlist reviewers' companies
+    # Fallbacks never come from the shortlist reviewers' company. The hosted demo falls back to Gemini, because the
+    # NVIDIA models answered with server errors from Streamlit Cloud.
+    "fit_ranker": [QWEN_LARGE, GEMINI_TEXT] if PUBLIC else [QWEN_LARGE, NEMOTRON, GLM],
     # The advisor writes rather than judges, so the first provider with quota wins. We leave Gemma out because it
     # was slow and often errored, and put Qwen last because it shares Groq's per-minute limit with ranking.
     "advisor": [GEMINI_TEXT, NEMOTRON, GLM, QWEN_LARGE],

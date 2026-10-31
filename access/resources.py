@@ -118,6 +118,11 @@ ROLE_SHARE = {"live": 0.20, "critic": 0.70, "auditor": 0.10,   # live is the app
               # One-off overnight experiments (the access.bench judges) borrow from the critic, which then hits
               # Groq's real limit sooner and pauses. We accepted slower library building on those nights.
               "experiment": 0.45}
+from .config import PUBLIC  # noqa: E402
+if PUBLIC:
+    # The hosted demo runs no critic or auditor, so live searches there may use half of each model's day
+    # (about 20 searches) instead of the fifth reserved for them on the research machine.
+    ROLE_SHARE = {**ROLE_SHARE, "live": 0.50}
 ROLE_OF = {"critic_sources": "critic", "auditor": "auditor", "critic_shortlist": "live",
            "fit_ranker": "live", "profile_builder": "live", "advisor": "live"}
 
