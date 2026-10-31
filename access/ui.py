@@ -65,7 +65,7 @@ html, body, [class*="st-"], .stMarkdown, button, input, textarea, select{font-fa
 #MainMenu, footer, [data-testid="stToolbar"], [data-testid="stDecoration"], [data-testid="stSidebarCollapsedControl"]{display:none!important}
 header[data-testid="stHeader"]{height:0;background:transparent}
 .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"]{background:var(--paper)}
-.block-container{padding-top:0;max-width:1200px}
+.block-container{padding-top:0;padding-bottom:2rem!important;max-width:1200px}
 h1,h2,h3{letter-spacing:-.02em;color:var(--ink)}
 .ic{display:inline-block;vertical-align:-2px;flex:none}
 
@@ -130,6 +130,66 @@ h1,h2,h3{letter-spacing:-.02em;color:var(--ink)}
 .st-key-formcard [data-testid="stForm"]{border:none!important;padding:0!important;box-shadow:none!important;background:transparent}
 @media (max-width:640px){.hero-l{padding-top:28px}.hero-l h1{font-size:2.5rem}.proof b{font-size:1.6rem}.pull{display:none}
   .st-key-formcard{padding:22px 18px 14px;margin-top:16px}}
+
+/* Homepage: centred hero, then one search bar. Sections below share a single vertical rhythm (96px). */
+.hero-c{text-align:center;padding:72px 0 30px;max-width:860px;margin:0 auto}
+.hero-c .eyebrow::after{content:"";width:26px;height:1px;background:var(--accent)}
+.hero-c h1{font-family:var(--serif)!important;font-size:4.2rem;line-height:1.02;font-weight:600!important;
+           letter-spacing:-.03em;margin:0 0 22px}
+.hero-c h1 em{font-style:italic;color:var(--accent);font-weight:500}
+.hero-c .lead{color:var(--body);font-size:1.15rem;line-height:1.65;max-width:620px;margin:0 auto}
+.st-key-searchbar{max-width:1000px;margin:8px auto 0;background:#fff;border:1px solid var(--line);border-radius:24px;
+       padding:20px 22px 6px;box-shadow:0 40px 80px -40px rgba(27,42,58,.35),0 2px 6px rgba(27,42,58,.04)}
+.st-key-searchbar [data-testid="stForm"]{border:none!important;padding:0!important;background:transparent;box-shadow:none}
+.st-key-searchbar textarea{font-size:1.02rem!important;line-height:1.55!important}
+.st-key-searchbar [data-testid="stFormSubmitButton"] button{min-height:44px;font-size:.98rem}
+.st-key-searchbar [data-testid="stExpander"] details{border-top:1px dashed var(--line)!important}
+.st-key-searchbar [data-testid="stExpander"] summary p{font-size:.85rem;font-weight:500;color:var(--muted)}
+.st-key-examples{max-width:1000px;margin:6px auto 0}
+.try{font-size:.82rem;color:var(--muted);text-align:right;white-space:nowrap}
+.fineprint{max-width:1000px;margin:6px auto 0;text-align:center;font-size:.76rem;color:var(--muted)}
+/* Trust strip */
+.logos{margin:84px 0 0;text-align:center}
+.logos-k{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:20px}
+.logos-row{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 38px}
+.logos-row span{font-family:var(--serif);font-size:1.12rem;font-weight:600;color:#9AA2AB;letter-spacing:-.005em;white-space:nowrap}
+/* Landing sections */
+.lp{margin:96px 0 0}
+.lp-k{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:10px}
+.lp-h{font-family:var(--serif)!important;font-size:2.6rem!important;font-weight:600!important;letter-spacing:-.025em;
+      line-height:1.08;margin:0 0 34px!important;padding:0!important}
+.lp-p{font-size:1.05rem;line-height:1.7;color:var(--body);margin:0 0 28px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--ink)}
+.step3{padding:26px 28px 0 0}
+.step3+.step3{padding-left:28px;border-left:1px solid var(--line)}
+.step3 span{font-family:var(--serif);font-size:1rem;color:var(--accent);font-weight:600}
+.step3 h3{font-family:var(--serif)!important;font-size:1.45rem!important;font-weight:600!important;margin:10px 0 10px!important;padding:0!important}
+.step3 p{font-size:.95rem;line-height:1.65;color:var(--body);margin:0}
+.lp-split{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:center}
+.proof-sm b{font-size:1.75rem!important}
+.sample{position:relative;background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px 26px 22px;
+        box-shadow:0 40px 80px -40px rgba(27,42,58,.35)}
+.sample-tag{position:absolute;top:-12px;left:22px;background:var(--ink);color:#fff;font-size:.7rem;font-weight:600;
+            letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:4px 11px}
+.faq{border-top:1px solid var(--ink)}
+.lp-faq{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:start}
+.faq details{border-bottom:1px solid var(--line);padding:4px 0}
+.faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;
+             font-size:1.08rem;font-weight:600;color:var(--ink);padding:18px 0}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--serif);font-size:1.6rem;font-weight:400;color:var(--accent);transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{margin:0 0 20px;color:var(--body);line-height:1.7;max-width:720px}
+.cta-band{margin:110px 0 0;background:var(--ink);color:#fff;border-radius:28px;padding:64px 40px;text-align:center}
+.cta-band h2{font-family:var(--serif)!important;color:#fff!important;font-size:2.6rem!important;font-weight:600!important;
+             letter-spacing:-.02em;margin:0 0 12px!important;padding:0!important}
+.cta-band p{color:#C9D3DD;margin:0 auto 28px;font-size:1.05rem}
+.cta-band a{display:inline-block;background:var(--accent);color:#fff!important;text-decoration:none!important;font-weight:600;
+            border-radius:12px;padding:14px 28px}
+.cta-band a:hover{background:var(--accent-dark)}
+@media (max-width:760px){.lp-faq{grid-template-columns:1fr;gap:0}.hero-c{padding-top:40px}.hero-c h1{font-size:2.6rem}.st-key-searchbar{padding:16px 14px 4px;border-radius:18px}
+  .try{text-align:left;margin:4px 0 2px}.steps,.lp-split{grid-template-columns:1fr}.step3,.step3+.step3{padding:22px 0 0;border-left:none}
+  .lp{margin-top:64px}.lp-h,.cta-band h2{font-size:1.9rem!important}.logos{margin-top:56px}.cta-band{padding:44px 22px}}
 
 /* Example researchers: compact pills inside the form card */
 .st-key-examples [data-testid="stButton"] button{border-radius:999px;min-height:34px;padding:3px 10px;max-width:100%;

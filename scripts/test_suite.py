@@ -420,7 +420,7 @@ def area_l():
     # L6: a search typed into the form, which is the path an audience member takes.
     at.text_area(key="about-" + "Amara - engineering undergraduate (Nigeria) seeking a funded master's").set_value(
         "Civil engineer with a master's degree interested in a PhD on flood risk and climate adaptation.")
-    at.button(key="FormSubmitter:profile-Find my funding  →").click().run()
+    at.button(key="FormSubmitter:profile-Find funding").click().run()
     text = " ".join(str(m.value) for m in at.markdown)
     m = re.search(r"programmes? (\w+) can apply for", text)
     record("L", "L6", "A search typed into the form returns results without an exception",

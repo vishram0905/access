@@ -436,53 +436,102 @@ if not load_lookup()[0]:
 
 # The first screen is split in two: what ACCESS does on the left, the search form on the right, so a visitor can
 # start a search without scrolling. On phones Streamlit stacks the two columns.
-pitch, mid = st.columns([1.02, 0.98], gap="large")
-with pitch:
-    lib = load_lookup()[0]
-    n_rules = sum(len(x.get("rules") or []) for x in lib)
-    html_block(f"""<div class='hero-l'><div class='eyebrow'>Verified research funding</div>
-<h1>Only the funding you can <em>actually</em> apply for.</h1>
-<p class='lead'>ACCESS reads every rule on the funder's official page, checks it against your profile, and shows
-you the sentence behind each decision.</p>
-<div class='proof'><div><b>{len(lib):,}</b><span>verified programmes</span></div>
-<div><b>{n_rules:,}</b><span>rules, each quoted</span></div><div><b>0.4 s</b><span>to your shortlist</span></div></div>
-<div class='pull'><i>“</i><div>Three AI judges from three different companies check every claim. Plain code makes
-every eligibility decision.</div></div></div>""")
-with mid, st.container(key="formcard"):
-    # An example only fills in the form. Results still appear after "Find my funding", so a visitor sees the real
-    # search run instead of a pre-made answer.
-    html_block("<div class='form-title'>Tell us about you</div>"
-               "<div class='form-sub'>About two minutes. Or start from an example researcher.</div>")
-    with st.container(key="examples"):
-        names = list(PERSONAS)
-        for row in (names[:2], names[2:]):
-            for col, label in zip(st.columns(2), row):
-                first = label.split(" - ", 1)[0]
-                if col.button(f"{first} · {EXAMPLE_CAPTIONS.get(first, nice(PERSONAS[label].get('career_stage')))}",
-                              key=f"ex-{first}", use_container_width=True):
-                    st.session_state.update(example=label, enrich_pending=False, show_closed=False, result=None)
+FUNDERS = ["DAAD", "Alexander von Humboldt Foundation", "UK Research and Innovation", "Fulbright", "JSPS",
+           "A*STAR", "National University of Singapore", "Simons Foundation", "Royal Society", "Mitacs"]
 
-    p = PERSONAS.get(st.session_state.get("example") or "", {})
-    k = st.session_state.get("example") or "blank"
-    with st.form("profile", border=True):
-        about = st.text_area("Your research and goals", p.get("about", ""), height=100,
-                             key=f"about-{k}", placeholder="e.g. I'm finishing a master's in computer science and "
-                                                           "want a funded PhD in trustworthy machine learning, "
-                                                           "ideally in Asia.")
-        c1, c2 = st.columns(2)
+
+def sample_card(lib) -> str:
+    """A real programme from the library, drawn exactly as a result card, so first-time visitors see what they will
+    get before they search. We pick a well-known one that has a quoted rule."""
+    good = [x for x in lib if len(x.get("rules") or []) >= 2 and funding_text(x)
+            and any(r.get("evidence") and r.get("attribute") in ("career_stage", "highest_degree") for r in x["rules"])]
+    pick = next((x for x in good if "Nanyang President" in (x.get("name") or "")), good[0] if good else None)
+    if not pick:
+        return ""
+    rule = next(r for r in pick["rules"] if r.get("evidence") and r.get("attribute") in ("career_stage", "highest_degree"))
+    l = {**pick, "gate": {"checks": [{"status": "pass", "evidence": rule["evidence"]}]},
+         "why": pick.get("summary", "")[:190].rsplit(" ", 1)[0] + "…"}
+    n = len(pick.get("rules") or [])
+    facts = card_facts(l) + [fact(f"<b>{n} of {n}</b> rules met", "check", "ok")]
+    return card_html(l, facts, 91)
+
+
+def landing(lib, n_rules):
+    """What a first-time visitor sees below the search: who the data comes from, how it works, an example result,
+    the questions people ask, and a way back up to the search. Once there are results, they replace all of this."""
+    funders = "".join(f"<span>{esc(f)}</span>" for f in FUNDERS)
+    html_block(f"""<div class='logos'><div class='logos-k'>Programmes verified from the official pages of funders
+including</div><div class='logos-row'>{funders}</div></div>
+<section class='lp'><div class='lp-k'>How it works</div><h2 class='lp-h'>Three steps, one honest answer.</h2>
+<div class='steps'>
+<div class='step3'><span>01</span><h3>Describe yourself</h3><p>A few sentences about your research, your nationality
+and career stage. Fixed facts are taken exactly as you give them; nothing is guessed.</p></div>
+<div class='step3'><span>02</span><h3>Every rule is checked</h3><p>Plain code tests each programme's eligibility
+rules against your profile, line by line, so the same profile always gets the same answer.</p></div>
+<div class='step3'><span>03</span><h3>See the evidence</h3><p>Eligible programmes are ranked by fit. Each one shows
+the sentence from the funder's page that its decision rests on, and a plan to apply.</p></div>
+</div></section>
+<section class='lp lp-split'><div><div class='lp-k'>What you get</div><h2 class='lp-h'>A shortlist you can
+check yourself.</h2><p class='lp-p'>Every result links to the funder's official page and quotes the rule it was
+decided on. Three AI judges from three different companies verified each programme before it entered the
+library, and anything they could not confirm was left out.</p>
+<div class='proof proof-sm'><div><b>{len(lib):,}</b><span>verified programmes</span></div>
+<div><b>{n_rules:,}</b><span>rules, each quoted</span></div><div><b>0.4 s</b><span>to your shortlist</span></div></div>
+</div><div class='sample'><div class='sample-tag'>Example result</div>{sample_card(lib)}</div></section>
+<section class='lp lp-faq'><div><div class='lp-k'>Questions</div><h2 class='lp-h'>Before you search</h2>
+<p class='lp-p'>The short version: it is free, it only uses official sources, and code, not a model, decides who
+is eligible.</p></div><div class='faq'>
+<details><summary>Is ACCESS free, and do I need an account?</summary><p>Yes, it is free, and there is no
+account. Your answers are used for this search only.</p></details>
+<details><summary>Where do the programmes come from?</summary><p>Only from funders' own websites: universities,
+government agencies and foundations. Aggregator sites are used to discover programmes, never as the source of a
+fact.</p></details>
+<details><summary>How is eligibility decided?</summary><p>By plain code, not by an AI model. Each rule is stored
+with the sentence it came from, and your profile is tested against it. Rules that depend on something you did not
+tell us are marked "to confirm" instead of guessed.</p></details>
+<details><summary>Can I trust the result completely?</summary><p>Treat it as a well-checked shortlist. Deadlines
+and conditions change, so always confirm the details on the funder's official page before applying.</p></details>
+</div></section>
+<section class='cta-band'><h2>Find the funding that fits you.</h2><p>It takes about two minutes, and you can start
+from an example researcher.</p><a href='#search'>Start a search</a></section>""")
+
+
+def load_example(label: str):
+    """Button callback: fill the form with an example researcher. It runs before the page is redrawn, which is what
+    lets the example buttons sit below the form they fill in."""
+    st.session_state.update(example=label, enrich_pending=False, show_closed=False, result=None)
+
+
+lib = load_lookup()[0]
+n_rules = sum(len(x.get("rules") or []) for x in lib)
+html_block("""<div id='search'></div><div class='hero-c'><div class='eyebrow'>Verified research funding</div>
+<h1>Only the funding you can <em>actually</em> apply for.</h1>
+<p class='lead'>Describe yourself once. ACCESS checks every rule on the funder's official page against your
+profile and shows you the sentence behind each decision.</p></div>""")
+
+p = PERSONAS.get(st.session_state.get("example") or "", {})
+k = st.session_state.get("example") or "blank"
+# The search reads like one object, in the spirit of travel-search bars: the description on top, the four facts
+# that decide eligibility in one row, and the button at the end of that row. Everything optional is folded away.
+with st.container(key="searchbar"):
+    with st.form("profile", border=False):
+        about = st.text_area("Your research and goals", p.get("about", ""), height=86, key=f"about-{k}",
+                             placeholder="e.g. I'm finishing a master's in computer science and want a funded PhD "
+                                         "in trustworthy machine learning, ideally in Asia.")
+        c1, c2, c3, c4, c5 = st.columns([1, 1.25, 1.1, 1.1, 0.85], vertical_alignment="bottom")
         nat = c1.selectbox("Nationality", COUNTRIES, key=f"nat-{k}",
                            index=COUNTRIES.index(p["nationality"]) if p.get("nationality") in COUNTRIES else None,
-                           placeholder="Select a country")
+                           placeholder="Select")
         stage = c2.selectbox("Career stage", CAREER_STAGES, key=f"stage-{k}",
                              format_func=lambda c: CAREER_SINGULAR[c].capitalize(),
                              index=CAREER_STAGES.index(p.get("career_stage", "masters")))
-        c1, c2 = st.columns(2)
-        wanted = c1.multiselect("Looking for", OPPORTUNITY_TYPES, default=p.get("wanted_types", []),
-                                format_func=human_title, key=f"want-{k}", placeholder="Any type of funding")
+        wanted = c3.multiselect("Looking for", OPPORTUNITY_TYPES, default=p.get("wanted_types", []),
+                                format_func=human_title, key=f"want-{k}", placeholder="Any funding")
         hosts = host_countries()  # only countries we have programmes for
-        targets = c2.multiselect("Where", list(hosts), default=[c for c in p.get("target_countries", []) if c in hosts],
+        targets = c4.multiselect("Where", list(hosts), default=[c for c in p.get("target_countries", []) if c in hosts],
                                  format_func=lambda c: f"{c} ({hosts[c]})", key=f"where-{k}", placeholder="Anywhere")
-        with st.expander("Add details for sharper eligibility checks (optional)"):
+        go = c5.form_submit_button("Find funding", type="primary", use_container_width=True)
+        with st.expander("More details for sharper checks (optional)"):
             fields = st.multiselect("Research fields", [f for f in FIELDS if f != "any"], format_func=human_title,
                                     key=f"fields-{k}", placeholder="Detected automatically from your description")
             c1, c2, c3 = st.columns(3)
@@ -505,36 +554,41 @@ with mid, st.container(key="formcard"):
                                    placeholder="—")
             ptypes = st.multiselect("Funder type", PROVIDER_TYPES, format_func=human_title, key=f"pt-{k}",
                                     placeholder="Any funder")
-        from access.config import PUBLIC
-        consent = st.checkbox("I agree that ACCESS uses these answers only to find funding for me. "
-                              + ("Searches are not stored and are never shared." if PUBLIC else
-                                 "Searches are kept on this computer, without my name, to evaluate the system, and "
-                                 "are never shared."),
-                              key=f"consent-{k}", value=bool(p))
-        go = st.form_submit_button("Find my funding  →", type="primary", use_container_width=True)
 
-    if go:
-        if not consent:
-            st.warning("Please tick the consent box so ACCESS can use your answers for this search.")
-            st.stop()
-        if not about.strip() or not nat:
-            st.warning("Please add a short description of your research and your nationality.")
-            st.stop()
-        form = {"name": p.get("name") or "you", "nationality": nat, "residency": resid or nat,
-                "career_stage": stage, "highest_degree": degree,
-                "years_since_phd": ysp if degree == "phd" else None, "age": age, "ielts": ielts,
-                "publications": pubs, "gpa": gpa, "work_experience_years": wexp,
-                "target_countries": targets, "wanted_types": wanted,
-                "provider_types": ptypes, "fields": fields, "about": about}
-        t0 = time.time()
-        try:
-            res = instant(form)  # the eligibility answer itself; no cloud model is involved
-        except Exception as e:
-            st.error("Something went wrong while searching. Please try again.")
-            st.caption(f"Technical detail: {type(e).__name__}: {str(e)[:160]}")
-            st.stop()
-        res["timings"]["first_result_s"] = round(time.time() - t0, 2)
-        st.session_state.update(result=res, enrich_pending=True, show_closed=False)
+# Example researchers sit under the bar as one quiet row, the way search sites offer suggestions.
+with st.container(key="examples"):
+    cols = st.columns([0.62, 1, 1, 1, 1], vertical_alignment="center")
+    cols[0].markdown("<div class='try'>Try an example</div>", unsafe_allow_html=True)
+    for col, label in zip(cols[1:], PERSONAS):
+        first = label.split(" - ", 1)[0]
+        col.button(f"{first} · {EXAMPLE_CAPTIONS.get(first, nice(PERSONAS[label].get('career_stage')))}",
+                   key=f"ex-{first}", use_container_width=True, on_click=load_example, args=(label,))
+from access.config import PUBLIC
+# Pressing the button is the consent. We say what that means right next to it rather than behind a checkbox.
+html_block("<div class='fineprint'>By searching you agree that ACCESS uses these answers only to find funding for you. "
+           + ("Searches are not stored and are never shared." if PUBLIC else
+              "Searches are kept on this computer, without your name, to evaluate the system, and are never shared.")
+           + "</div>")
+
+if go:
+    if not about.strip() or not nat:
+        st.warning("Please add a short description of your research and your nationality.")
+        st.stop()
+    form = {"name": p.get("name") or "you", "nationality": nat, "residency": resid or nat,
+            "career_stage": stage, "highest_degree": degree,
+            "years_since_phd": ysp if degree == "phd" else None, "age": age, "ielts": ielts,
+            "publications": pubs, "gpa": gpa, "work_experience_years": wexp,
+            "target_countries": targets, "wanted_types": wanted,
+            "provider_types": ptypes, "fields": fields, "about": about}
+    t0 = time.time()
+    try:
+        res = instant(form)  # the eligibility answer itself; no cloud model is involved
+    except Exception as e:
+        st.error("Something went wrong while searching. Please try again.")
+        st.caption(f"Technical detail: {type(e).__name__}: {str(e)[:160]}")
+        st.stop()
+    res["timings"]["first_result_s"] = round(time.time() - t0, 2)
+    st.session_state.update(result=res, enrich_pending=True, show_closed=False)
 
 res = st.session_state.get("result")
 # We draw all results into one fixed container and replace it as a whole on every run. When the layout changed
@@ -546,4 +600,6 @@ if res:
         slot = show_results(res)
         if st.session_state.get("enrich_pending"):
             run_enrichment(res, slot)
+else:
+    landing(lib, n_rules)
 footer()
